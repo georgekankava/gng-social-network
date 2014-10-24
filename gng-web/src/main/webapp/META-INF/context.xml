@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+   <!-- <Loader className="org.atmosphere.util.AtmosphereClassloader"/> -->
+   <Loader delegate="true"/>
+   <!-- disable storage of sessions across restarts -->
+   <Manager pathname=""/>
+   <Resource name="BeanManager" auth="Container" type="javax.enterprise.inject.spi.BeanManager" factory="org.jboss.weld.resources.ManagerObjectFactory"/>
+   <!-- Uncomment to enable injection into Servlets, Servlet Listeners and Filters in Tomcat -->
+   <!-- <Listener className="org.jboss.weld.environment.tomcat.WeldLifecycleListener"/> -->
+    <Ejb name="ejb/myBean" type="Session" factory="com.sun.enterprise.naming.SerialInitContextFactory" URL="iiop://localhost:3700/java:global/test-dsconfear-1.0-SNAPSHOT/testdb-conf-1.0-SNAPSHOT/ababaabaasasasass!com.test.dbconf.TestBeanTestRemote" />
+</Context>

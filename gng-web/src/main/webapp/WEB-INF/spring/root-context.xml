@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	
+	<context:component-scan base-package="com.gng.network.dao" />
+	<context:component-scan base-package="com.gng.network.service.impl" />
+	<context:component-scan base-package="com.gng.network.helper" />
+	<context:component-scan base-package="com.gng.network.servlet.handler" />
+	<context:annotation-config />
+	
+	<beans:bean id="mapper" class="org.codehaus.jackson.map.ObjectMapper" />
+	
+	<beans:bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+		<beans:property name="basenames">
+			<beans:list>
+				<beans:value>/WEB-INF/spring/messages/messages</beans:value>
+			</beans:list>
+		</beans:property>
+	</beans:bean>
+	<beans:import resource="classpath:spring-security.xml" />
+	<beans:import resource="classpath:db.xml" />
+</beans:beans>

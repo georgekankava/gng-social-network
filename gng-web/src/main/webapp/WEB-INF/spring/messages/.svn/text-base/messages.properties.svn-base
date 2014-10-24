@@ -1,0 +1,27 @@
+error.message.user.or.password.not.found=Username or password doesn't match. Please try again
+profile.image.location=/datingsite/images/profile
+accept.friend.request.response='{'"id" : "{0}", "username" : "{1}", "firstname" : "{2}", "lastname" : "{3}", "fullname" : "{4}"'}'
+comment.push.json='{' "postId" : "{0}", "commentId" : "{1}", "comment" : "{2}", "commentDate" : "{3}", "fullname" : "{4}"'}'
+user.search.regex.invalid={ "errorMessage" : "Please specify valid string" }
+user.not.found.exception.message=user with specified id {0} does not exist
+event.type.friend.request=You have Got Friend Request from user {0} 
+event.type.photo.tag=You were tagged in photo by user {0}
+event.type.invitation=You were invited by user {0}
+youtube.url=youtube.com
+youtube.embed.url=//www.youtube.com/embed/
+post.remove.response.json=Post was successfully removed
+post.remove.error.response.json=Post couldn't be removed
+post.text.like=like
+post.text.unlike=unlike
+post.not.found.exception.message=post with specified id --> {0} does not exist
+post.like.null.result.exception.message=PostLike object with specified userId and postId cannot be found. userId-->{0} postId-->{1}
+null.object.exception.postlike=PostLike object cannot be null
+null.object.exception.post=Post object cannot be null
+null.object.exception.user=User object cannot be null
+post.like.with.null.id.exception.message=PostLike Id cannot be null
+post.like.response.text.post.liked=Liked
+post.like.response.text.post.unliked=Unliked
+post.like.header.title.message=People Who Like This
+post.url.meta.tag=<meta
+post.url.meta.tag.name.attribute=name=\"description\"
+post.url.meta.tag.content.attribute=content=\"

@@ -1,0 +1,28 @@
+package com.gng.network.service;
+
+import org.springframework.context.NoSuchMessageException;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.gng.network.enities.Comment;
+import com.gng.network.enities.Post;
+import com.gng.network.exceptions.CommentNotFoundException;
+import com.gng.network.exceptions.NullObjectException;
+import com.gng.network.exceptions.NullObjectIdException;
+import com.gng.network.exceptions.NullPostIdException;
+import com.gng.network.exceptions.NullResultException;
+import com.gng.network.exceptions.NullUserIdException;
+import com.gng.network.exceptions.PostNotFoundException;
+import com.gng.network.exceptions.UserNotFoundException;
+import com.gng.network.json.response.PostLikeJsonResponse;
+
+public interface PostService {
+	void getFriendsActivePosts(Integer userId, ModelAndView mav) throws UserNotFoundException;
+	void addPost(Post post) throws UserNotFoundException;
+	void removePost(Integer postId) throws PostNotFoundException;
+	Integer addComment(String username, Integer postId, String commentContent) throws PostNotFoundException, UserNotFoundException;
+	void removeComment(Integer commentId) throws CommentNotFoundException;
+	Comment findCommentById(Integer commentId) throws CommentNotFoundException;
+	Post findPostById(Integer id) throws PostNotFoundException;
+	PostLikeJsonResponse likePost(Integer userId, Integer postId) throws UserNotFoundException, PostNotFoundException, NullPostIdException, NoSuchMessageException, NullObjectException, NullUserIdException, NullResultException;
+	PostLikeJsonResponse unlikePost(Integer userId, Integer postId) throws UserNotFoundException, PostNotFoundException, NullPostIdException, NoSuchMessageException, NullUserIdException, NullResultException, NullObjectIdException;
+}

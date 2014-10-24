@@ -1,0 +1,178 @@
+package com.gng.network.servlet.atmosphere;
+
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.atmosphere.config.service.MeteorService;
+import org.atmosphere.cpr.AtmosphereResource;
+import org.atmosphere.cpr.AtmosphereResource.TRANSPORT;
+import org.atmosphere.cpr.AtmosphereResourceEvent;
+import org.atmosphere.cpr.AtmosphereResourceEventListenerAdapter;
+import org.atmosphere.cpr.Broadcaster;
+import org.atmosphere.cpr.BroadcasterFactory;
+import org.atmosphere.cpr.DefaultBroadcaster;
+import org.atmosphere.cpr.Meteor;
+import org.atmosphere.interceptor.AtmosphereResourceLifecycleInterceptor;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.MessageSource;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+
+import com.gng.network.enities.Comment;
+import com.gng.network.enities.User;
+import com.gng.network.exceptions.CommentNotFoundException;
+import com.gng.network.exceptions.UserNotFoundException;
+import com.gng.network.json.response.CommentContent;
+import com.gng.network.json.response.Message;
+import com.gng.network.json.response.OnlineUsersRequestJson;
+import com.gng.network.json.response.OnlineUsersResponseJson;
+import com.gng.network.service.MessageService;
+import com.gng.network.service.PostService;
+import com.gng.network.service.UserService;
+import com.gng.network.singletones.AtmosphereConnectionUuids;
+
+
+@SuppressWarnings("serial")
+@MeteorService(path = "/meteor", interceptors = {AtmosphereResourceLifecycleInterceptor.class})
+public class BroadcasterServlet extends HttpServlet {
+           
+    ObjectMapper mapper = new ObjectMapper();
+    
+    private static final Logger logger = LoggerFactory.getLogger(BroadcasterServlet.class);
+    
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM dd, yyyy hh:mm");
+    
+    /**
+     * Create a {@link Meteor} and use it to suspend the response.
+     *
+     * @param req An {@link HttpServletRequest}
+     * @param res An {@link HttpServletResponse}
+     */
+    @Override
+    public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
+        // Set the logger level to TRACE to see what's happening.
+      Integer userId = Integer.parseInt(req.getParameter("userId"));
+      Meteor meteor = Meteor.build(req).addListener(new AtmosphereResourceEventListenerAdapter());
+      AtmosphereResource resource = meteor.getAtmosphereResource();
+      AtmosphereConnectionUuids.getInstance().addResource(userId, resource);
+      meteor.resumeOnBroadcast(meteor.transport() == TRANSPORT.LONG_POLLING ? true : false).suspend(-1);
+      WebApplicationContext wac = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
+      final UserService userService = wac.getBean(UserService.class);
+      changeUserOnlineStatus(userId, resource, userService);
+    }
+
+    private void changeUserOnlineStatus(Integer userId, AtmosphereResource resource, final UserService userService) {
+        try {
+            final User user = userService.findUserById(userId);
+            user.setOnline(true);
+            userService.updateUser(user);
+            resource.addEventListener(new AtmosphereResourceEventListenerAdapter() {
+                  @Override
+                  public void onDisconnect(AtmosphereResourceEvent event) {
+                      user.setOnline(false);
+                      userService.updateUser(user);
+                  }
+              });
+          } catch (UserNotFoundException e) {
+            logger.info("User not Found: " + e.getMessage());
+          }
+    }
+
+    /**
+     * Re-use the {@link Meteor} created on the first GET for broadcasting message.
+     *
+     * @param req An {@link HttpServletRequest}
+     * @param res An {@link HttpServletResponse}
+     */
+    @Override
+    public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
+        WebApplicationContext wac = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
+        String body = req.getReader().readLine().trim();
+        if(!body.isEmpty() && body.contains("commentId")) {
+            PostService postService = wac.getBean(PostService.class);
+            UserService userService = wac.getBean(UserService.class);
+            MessageSource messageSource = wac.getBean(MessageSource.class);
+            try {
+                CommentContent content = mapper.readValue(body, CommentContent.class);
+                Comment comment = postService.findCommentById(content.getCommentId());
+                List<Integer> userIds = userService.getUsersFriendUserIds(comment.getUser());
+                Broadcaster broadcaster = BroadcasterFactory.getDefault().get();
+                broadcastComment(userIds, broadcaster, messageSource, comment);
+            } catch (CommentNotFoundException e) {
+                logger.info("comment not found ", e);
+            }
+        } else if(!body.isEmpty() && body.contains("getOnlineUsers")) {
+            OnlineUsersRequestJson onlineUsersJson = mapper.readValue(body, OnlineUsersRequestJson.class);
+            try {
+                UserService userService = wac.getBean(UserService.class);
+                User user = userService.findUserById(onlineUsersJson.getUserId());
+                List<User> friends = userService.getUsersFriends(user);
+                List<OnlineUsersResponseJson> onlineUsers = new ArrayList<OnlineUsersResponseJson>();
+                for(User friend : friends) {
+                    AtmosphereResource atmosphereResource = AtmosphereConnectionUuids.getInstance().getResource(friend.getId());
+                    if(!atmosphereResource.isCancelled()) {
+                        OnlineUsersResponseJson responseJson = new OnlineUsersResponseJson();
+                        responseJson.setFirstName(friend.getFirstname());
+                        responseJson.setLastName(friend.getLastname());
+                        responseJson.setUserId(friend.getId());
+                        onlineUsers.add(responseJson);
+                    }
+                }
+                String onlineFriendsResponse = mapper.writeValueAsString(onlineUsers);
+                AtmosphereResource atmosphereResource = AtmosphereConnectionUuids.getInstance().getResource(onlineUsersJson.getUserId());
+                broadcastResponse(onlineFriendsResponse, atmosphereResource, null);
+                System.out.println(onlineFriendsResponse);
+            } catch (UserNotFoundException e) {
+                logger.info("user with id : " + onlineUsersJson.getUserId() + " was not found");
+            }
+        } else {
+            MessageService messageService = wac.getBean(MessageService.class);
+            Message message = mapper.readValue(body, Message.class);
+            try {
+                messageService.addMessage(message);
+            } catch(UserNotFoundException ex) {
+                logger.info(ex.getMessage(), ex);
+            }
+            AtmosphereResource resource = AtmosphereConnectionUuids.getInstance().getResource(message.getReceiver());
+            broadcastResponse(message.toString(), resource, null);
+        }
+    }
+
+    private void broadcastResponse(String responseJson, AtmosphereResource resource, String broadcasterName) {
+        Broadcaster broadcaster = null;
+        if(broadcasterName != null) {
+            broadcaster= BroadcasterFactory.getDefault().lookup(DefaultBroadcaster.class, broadcasterName);
+        } else {
+            broadcaster = BroadcasterFactory.getDefault().get();
+        }
+        if(resource != null) {
+            broadcaster.addAtmosphereResource(resource);
+            broadcaster.broadcast(responseJson);
+        }
+    }
+
+    private String getJsonMessage(MessageSource messageSource, Comment comment) {
+        return messageSource.getMessage("comment.push.json", new Object[]{comment.getPost().getId(), comment.getId(), comment.getCommentContent(), simpleDateFormat.format(new Date()), comment.getUser().getFullname()}, null);
+    }
+
+    private void broadcastComment(List<Integer> userIds, Broadcaster broadcaster, MessageSource messageSource, Comment comment) {
+        for(Integer userId : userIds) {
+            AtmosphereResource atmosphereResource = AtmosphereConnectionUuids.getInstance().getResource(userId);
+            if(atmosphereResource != null) {
+                broadcaster.addAtmosphereResource(atmosphereResource);
+            }            
+        }
+        String commentResponseJson = getJsonMessage(messageSource, comment);
+        broadcaster.broadcast(commentResponseJson);
+    }
+    
+}

@@ -1,0 +1,42 @@
+@CHARSET "UTF-8";
+
+body {
+	background-image: url('../images/find-people.jpg');
+}
+
+.sign-in {background-color:red; text-align:center}
+
+.username {
+	margin-left: 550px;
+	margin-top: 10px;
+}
+
+.password {
+	margin-left: 550px;
+}
+
+.image-border {
+	left: auto;
+}
+
+.submit-button {
+	margin-left: 560px;
+}
+
+.header-style {
+	color: blue;
+}
+
+.error-message {
+	color: red;
+	margin-left: 700px;
+}
+
+.login-inputs {
+	
+}
+
+.error {
+	color:red;
+}
+

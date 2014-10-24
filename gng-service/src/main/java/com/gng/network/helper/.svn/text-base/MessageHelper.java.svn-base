@@ -1,0 +1,61 @@
+package com.gng.network.helper;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.inject.Inject;
+
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+
+import com.gng.network.mapping.json.Message;
+
+@Component
+public class MessageHelper {
+	
+	private static final Logger logger = LoggerFactory.getLogger(MessageHelper.class);
+	
+	@Inject
+	private ObjectMapper mapper;
+	
+	public List<Message> convertMessagesToJsonMessages(List<com.gng.network.enities.Message> messages) {
+		List<Message> convertedMessages = new ArrayList<Message>();
+		for (com.gng.network.enities.Message message : messages) {
+			Message cMessage = new Message();
+			cMessage.setAuthor(message.getUserFrom().getId());
+			cMessage.setReceiver(message.getUserTo().getId());
+			cMessage.setMessage(message.getMessage());
+			cMessage.setAuthorFullname(message.getUserFrom().getFullname());
+			cMessage.setTime(message.getTime());
+			convertedMessages.add(cMessage);
+		}
+		return convertedMessages;
+	}
+	
+	public String convertMessagesToJsonString(List<Message> messages) {
+		try {
+			String jsonMessages = mapper.writeValueAsString(messages);
+			return jsonMessages;
+		} catch (JsonGenerationException e) {
+			logger.info(e.getMessage());
+		} catch (JsonMappingException e) {
+			logger.info(e.getMessage());
+		} catch (IOException e) {
+			logger.info(e.getMessage());
+		}
+		return null;
+	}
+	
+	public String constructJsonResponse(String jsonMessages, long messageMillies) {
+		jsonMessages = "\"messages\": " + jsonMessages;
+		String jsonMillies = "\"messageMillies\": " + messageMillies;
+		String jsonResponse = "{ " + jsonMessages + ", " + jsonMillies + " }"; 
+		return jsonResponse;
+	}
+	
+}

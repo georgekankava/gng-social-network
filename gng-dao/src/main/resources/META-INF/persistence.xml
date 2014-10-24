@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
+      http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd"
+	version="1.0">
+
+	<persistence-unit name="datingPU" transaction-type="RESOURCE_LOCAL">
+		<class>com.gng.network.enities.Address</class>
+		<class>com.gng.network.enities.Comment</class>
+		<class>com.gng.network.enities.Event</class>
+		<class>com.gng.network.enities.FriendRequest</class>
+		<class>com.gng.network.enities.Message</class>
+		<class>com.gng.network.enities.Post</class>
+		<class>com.gng.network.enities.Roles</class>
+		<class>com.gng.network.enities.User</class>
+		<class>com.gng.network.enities.Image</class>
+		<class>com.gng.network.enities.Album</class>
+		<class>com.gng.network.enities.PostLike</class>
+	</persistence-unit>
+
+</persistence>
