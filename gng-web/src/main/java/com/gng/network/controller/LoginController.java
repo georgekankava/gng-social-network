@@ -30,7 +30,7 @@ public class LoginController {
     MessageSource messageSource;
     
     @RequestMapping("/login.html")
-    public ModelAndView login(HttpServletRequest request, HttpServletResponse response, 
+    public ModelAndView login(HttpServletRequest request, HttpServletResponse response,
             HttpSession session, @ModelAttribute("loginForm") LoginForm loginForm,
             @ModelAttribute("userSignupData") UserSignupData userSignupData,
             BindingResult bindingResult) {

@@ -4,12 +4,11 @@
 	<c:forEach items="${pageHtmlTags }" var="htmlTag">
 		<c:choose>
 			<c:when test="${htmlTag.tagName eq 'meta' }">
-				<div>test${htmlTag.getAttribute('content')}</div>
+				<div>${htmlTag.getAttribute('content')}</div>
 			</c:when>
 			<c:when test="${htmlTag.tagName eq 'img' }">
 				<div><img src="${hostUrl}${htmlTag.getAttribute('src')}"/></div>
 			</c:when>
 		</c:choose>
-		<div></div>
 	</c:forEach>
 </div>

@@ -97,7 +97,9 @@ public class MainController {
     }
     
     @RequestMapping(value = "/profile")
-	public ModelAndView profile(@RequestParam Integer userId, ModelAndView mav, HttpSession session) {
+	public ModelAndView profile(@RequestParam Integer userId, 
+								ModelAndView mav, 
+								HttpSession session) {
 		
 		try {
 			Integer loggedUserId = UserContext.getLoggedUser().getUserId();
@@ -132,9 +134,12 @@ public class MainController {
     }
 	
 	@RequestMapping(value = "/register-user.html", method = RequestMethod.POST)
-	public ModelAndView registerUser(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, ModelAndView mav,
-			@Valid @ModelAttribute("userSignupData") UserSignupData userSignupData, BindingResult result,
-			@RequestParam(value="image", required = false) MultipartFile image) throws IOException, NoSuchAlgorithmException {
+	public ModelAndView registerUser(HttpServletRequest httpServletRequest, 
+									 HttpServletResponse httpServletResponse, 
+									 ModelAndView mav,
+									 @Valid @ModelAttribute("userSignupData") UserSignupData userSignupData, 
+									 BindingResult result,
+									 @RequestParam(value="image", required = false) MultipartFile image) throws IOException, NoSuchAlgorithmException {
 		if(result.hasErrors()) {
 			mav.setViewName("welcome");
 			return mav;
@@ -163,7 +168,8 @@ public class MainController {
 	
 	
 	@SuppressWarnings("unused")
-	private String saveImage(String filename, MultipartFile image) throws ImageUploadException {
+	private String saveImage(String filename, 
+							 MultipartFile image) throws ImageUploadException {
 		String storagePath = messageSource.getMessage("profile.image.location", null, Locale.getDefault());
 		try {
 			String originalFileName = image.getOriginalFilename();

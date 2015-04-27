@@ -163,17 +163,22 @@ public class PostController {
 	    	        String htmlMetaOpenerTag = messageSource.getMessage("post.url.meta.tag", null, "<meta", null);
 	    	        String htmlMetaTagNameAttribute = messageSource.getMessage("post.url.meta.tag.name.attribute", null, "name=\"description\"", null);
 	    	        for(String contentLine : content) {
-	    	        	if(contentLine.indexOf(htmlMetaOpenerTag) != -1) {
-	    	        		if(contentLine.indexOf(htmlMetaTagNameAttribute) != -1) {
-	    	        			int contentAttributeStartIndex = contentLine.indexOf(messageSource.getMessage("post.url.meta.tag.content.attribute", null, "content=\"", null));
-	    	        			int contentAttributeEndindex = contentLine.indexOf("\"", contentAttributeStartIndex);
-	    	        			if(contentAttributeStartIndex != -1 && contentAttributeEndindex != -1) {
-	    	        				pageMetaDescription = contentLine.substring(contentAttributeStartIndex, contentAttributeEndindex);
-	    	        				if(!pageMetaDescription.trim().equals("")) {
-		    	        				HTMLTag htmlTag = new HTMLTag();
-		        	        			htmlTag.setTagName("meta");
-		        	        			htmlTag.addAttribute("content", pageMetaDescription);
-		        	        			htmlTags.add(htmlTag);
+	    	        	contentLine = contentLine.toLowerCase();
+	    	        	if(contentLine.indexOf(htmlMetaOpenerTag.toLowerCase()) != -1) {
+	    	        		if(contentLine.indexOf(htmlMetaTagNameAttribute.toLowerCase()) != -1) {
+	    	        			String metaTagContentAttribute = messageSource.getMessage("post.url.meta.tag.content.attribute", null, "content=\"", null).toLowerCase();
+	    	        			int contentAttributeStartIndex = contentLine.indexOf(metaTagContentAttribute);
+	    	        			if(contentAttributeStartIndex != -1) {
+	    	        				contentAttributeStartIndex += metaTagContentAttribute.length();
+	    	        				int contentAttributeEndindex = contentLine.indexOf("\"", contentAttributeStartIndex);
+	    	        				if(contentAttributeEndindex != -1) {
+		    	        				pageMetaDescription = contentLine.substring(contentAttributeStartIndex, contentAttributeEndindex);
+		    	        				if(!pageMetaDescription.trim().equals("")) {
+			    	        				HTMLTag htmlTag = new HTMLTag();
+			        	        			htmlTag.setTagName("meta");
+			        	        			htmlTag.addAttribute("content", pageMetaDescription);
+			        	        			htmlTags.add(htmlTag);
+		    	        				}
 	    	        				}
 	    	        			}
 	    	        		}
