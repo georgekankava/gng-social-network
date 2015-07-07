@@ -3,7 +3,6 @@ package com.gng.network.service.impl;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -51,7 +50,7 @@ public class MessageServiceImpl implements MessageService {
 			throw new UsernameNotFoundException("user not found");
 		}
 		message.setAuthorFullname(from.getFullname());
-		messageDao.addMessage(from, to, message.getMessage(), new Date().getTime());
+		messageDao.addMessage(from, to, message.getMessage(), System.currentTimeMillis());
 	}
 
 	@Transactional(propagation=Propagation.REQUIRED, readOnly=false)
@@ -66,7 +65,7 @@ public class MessageServiceImpl implements MessageService {
 		try {
 			User userFrom = userService.findUserById(userFromId);
 			User userTo = userService.findUserById(userToId);
-			return getJsonMessages(userFrom, userTo, millies); 
+			return getJsonMessages(userFrom, userTo, millies);
 		} catch(UserNotFoundException e) {
 			logger.info(e.getMessage());
 			throw new UserNotFoundException(e.getMessage());
@@ -118,7 +117,6 @@ public class MessageServiceImpl implements MessageService {
 			Long tempMessageMillies1 = messageDao.getMessageMaxTime(userFrom, userTo);
 			Long tempMessageMillies2 = messageDao.getMessageMaxTime(userTo, userFrom);
 			messageMillies = compareMillies(tempMessageMillies1, tempMessageMillies2, messageMillies);
-			
 		} else {
 			Long tempMessageMillies1 = messageDao.getMessageMaxTimeLessThan(userFrom, userTo, messageMillies - WebConstants.TWENTYFOUR_HOURS);
 			Long tempMessageMillies2 = messageDao.getMessageMaxTimeLessThan(userTo, userFrom, messageMillies - WebConstants.TWENTYFOUR_HOURS);

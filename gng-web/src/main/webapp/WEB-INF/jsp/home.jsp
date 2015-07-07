@@ -111,7 +111,16 @@
 						</div>
 					</div>
 				</form>
-				<div id="postedUrlContent"></div>
+				<div id="postedUrlFrame" style="width: 400px;height: 400px;">
+					<div id="postedUrlImagesFrame">
+						<img id="postedUrlImages" src="">
+					</div>
+					<div id="postedUrlDescription"></div>
+					<div id="postUrlButtons">
+						<button id="previousPostUrlImageButton">previous</button>
+						<button id="nextPostUrlImageButton">next</button>
+					</div>
+				</div>
 				<c:forEach var="post" items="${posts}" varStatus="postCounter">
 					<blockquote id="post-content-${post.id }">
 						<c:if test="${post.user.id eq userId}">
@@ -196,6 +205,8 @@
 			  $('#add-friend-yes-link-${friendRequest.userFrom.id}').bind('click', function() {acceptFriendRequest('${friendRequest.id}');});
 			  $('#add-friend-no-link-${friendRequest.userFrom.id}').bind('click', function() {denyFriendRequest('${friendRequest.id}');});
 			</c:forEach>
+			$('#previousPostUrlImageButton').bind('click', function() {showPreviousPostUrlImage();});
+			$('#nextPostUrlImageButton').bind('click', function() {showNextPostUrlImage();});
 	</script>
 </body>
 </html>

@@ -266,13 +266,21 @@ function getMessages(userId,friendUserId,millies,initial) {
 	});
 }
 
+
 function readPostURLContent(postUrl) {
 	var url = baseUrl + '/read-post-url.ajax';
 	$.ajax({
 		url: url,
 		data: {postUrl: postUrl},
 	}).done(function(data) {
-		$('#postedUrlContent').html(data);
+		
+		$( data ).each(function() {
+			if(this.tagName === 'meta') {
+				$('#postedUrlDescription').html(this.attributes.content);
+			} else if(this.tagName === 'img') {
+				postUrlImages.push(this.attributes.src);
+			}
+		});
 	});
 	
 }

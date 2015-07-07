@@ -141,10 +141,8 @@ public class PostController {
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "/read-post-url.ajax", produces={"application/json"})
-    public ModelAndView readPostUrl(@RequestParam String postUrl) {
-    	ModelAndView mav = new ModelAndView();
-    	mav.setViewName("ajax/html-page-info");
+    @RequestMapping(value = "/read-post-url.ajax", method=RequestMethod.GET, produces={"application/json"})
+    public List<HTMLTag> readPostUrl(@RequestParam String postUrl) {
     	List<HTMLTag> htmlTags = new ArrayList<HTMLTag>();
     	try {
 	    	if(urlPattern.matcher(postUrl).matches()) {
@@ -154,6 +152,7 @@ public class PostController {
 	    	        String inputLine;
 	    	        List<String> content = new ArrayList<String>();
 	    	        StringBuilder pageContent = new StringBuilder();
+	    	        String hostUrl = url.getProtocol() + "://" + url.getHost() + ":" + (url.getDefaultPort() != -1 ? url.getDefaultPort() : "");
 	    	        while ((inputLine = in.readLine()) != null) {
 	    	        	pageContent.append(inputLine);
 	    	            content.add(inputLine);
@@ -202,20 +201,18 @@ public class PostController {
 	    	        			HTMLTag htmlTag = new HTMLTag();
 	    	        			htmlTag.setTagName("img");
 	    	        			String srcAttributeValue = contentLine.substring(srcAttributeStartIndex, srcAttributeEndIndex);
-	    	        			htmlTag.addAttribute(srcAttributeName, srcAttributeValue);
+	    	        			htmlTag.addAttribute(srcAttributeName, hostUrl + srcAttributeValue);
 	    	        			htmlTags.add(htmlTag);
 	    	        		}
 	    	        	}
 	    	        }
-	    	        mav.addObject("hostUrl", url.getProtocol() + "://" + url.getHost() + ":" + (url.getDefaultPort() != -1 ? url.getDefaultPort() : ""));
-	    	        mav.addObject("pageHtmlTags", htmlTags);
 	    	}
     	} catch (MalformedURLException e) {
     		logger.info(e.getMessage());
     	} catch (IOException e) {
     		logger.info(e.getMessage());
     	}
-    	return mav;
+    	return htmlTags;
     }
     
     @RequestMapping(value = "/show-post-like-friends-list.ajax")
@@ -252,8 +249,7 @@ public class PostController {
     public Integer addComment(HttpServletResponse response, @RequestParam String username, 
                               @RequestParam Integer postId, @RequestParam String commentContent) {
         try {
-            Integer commentId = postService.addComment(username, postId, commentContent);
-            return commentId;
+            return postService.addComment(username, postId, commentContent);
         } catch (PostNotFoundException e) {
             logger.error("post with id [" + postId + "] was not found");
         } catch (UserNotFoundException e) {

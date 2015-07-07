@@ -39,8 +39,7 @@ public class MessageHelper {
 	
 	public String convertMessagesToJsonString(List<Message> messages) {
 		try {
-			String jsonMessages = mapper.writeValueAsString(messages);
-			return jsonMessages;
+			return mapper.writeValueAsString(messages);
 		} catch (JsonGenerationException e) {
 			logger.info(e.getMessage());
 		} catch (JsonMappingException e) {

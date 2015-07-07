@@ -125,6 +125,23 @@ function prependMessage(fullname, friendId, message, color, datetime) {
 function scrollChatWindowBottom(windowId) {
 	$('#chat-window-' + windowId).scrollTop('1400');
 }
+
+function showNextPostUrlImage() {
+	if(postUrlImagesCounter < postUrlImages.length) {
+		$('#postedUrlImages').attr("src", postUrlImages[postUrlImagesCounter++]);
+	}
+}
+
+function showPreviousPostUrlImage() {
+	if(postUrlImagesCounter > 0) {
+		$('#postedUrlImages').attr("src", postUrlImages[postUrlImagesCounter--]);
+	}
+}
+
+var postUrlImages = [];
+
+var postUrlImagesCounter = 1;
+
 var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November',	'December'];
 var activeChatWindowCount = 1;
 var lastMessageMillies = 0;
