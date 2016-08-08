@@ -26,6 +26,7 @@ import org.hibernate.annotations.CollectionId;
 @Entity
 @Table(catalog="sns", name="User")
 @NamedQueries({
+	@NamedQuery(name="User.findUserById", query="SELECT user FROM User user WHERE user.id= :id"),
 	@NamedQuery(name="User.findUserByUsername", query="SELECT user FROM User user WHERE user.username = :username"),
 	@NamedQuery(name="User.findUserByFirstname", query="SELECT user FROM User user WHERE user.firstname = :firstname"),
 	@NamedQuery(name="User.findUserByLastname", query="SELECT user FROM User user WHERE user.lastname = :lastname"),

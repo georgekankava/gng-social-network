@@ -3,6 +3,8 @@ package com.gng.network.dao;
 import com.gng.network.enities.User;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 
 /**
@@ -10,8 +12,12 @@ import java.util.List;
  */
 @Repository("friendsDao")
 public class FriendsJpa implements FriendsDao {
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
     @Override
     public List<User> getUsersFriends(Integer userId) {
-        return null;
+        return entityManager.createNamedQuery("User.findUserById").setParameter("id", userId).getResultList();
     }
 }
