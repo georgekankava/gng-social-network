@@ -13,9 +13,13 @@
     <link href="resources/css/bootstrap-3.3.7.css" rel="stylesheet" media="screen">
 </head>
 <body>
-    <c:forEach var="friend" items="${friendsList}">
-        <c:out value="${friend.fullname}"/><p>
-    </c:forEach>
+    <div class="container">
+        <div class="row">
+            <c:forEach var="friend" items="${friendsList}">
+                <c:out value="${friend.fullname}"/>
+            </c:forEach>
+        </div>
+    </div>
     <script type="text/javascript" src="resources/scripts/jquery-3.1.0.min.js"></script>
     <script type="text/javascript" src="resources/scripts/bootstrap-3.3.7.min.js"></script>
 </body>
