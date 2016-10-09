@@ -10,15 +10,21 @@
 <html>
 <head>
     <title>Friends</title>
-    <link href="resources/css/bootstrap-3.3.7.css" rel="stylesheet" media="screen">
+    <link href="resources/css/bootstrap.min.css" rel="stylesheet" media="screen">
 </head>
 <body>
     <div class="container">
-        <div class="row">
+            <div class="row" style="padding: 10px">
             <c:forEach var="friend" items="${friendsList}">
-                <c:out value="${friend.fullname}"/>
-            </c:forEach>
-        </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <img src="images?id=${friend.id}&profileImage=true" width="140" class="img-circle" />
+                    </div>
+                    <div class="col-md-6">
+                        <a href="#"><c:out value="${friend.fullname}" /></a>
+                    </div>
+                </div>
+            </c:forEach>2
     </div>
     <script type="text/javascript" src="resources/scripts/jquery-3.1.0.min.js"></script>
     <script type="text/javascript" src="resources/scripts/bootstrap-3.3.7.min.js"></script>

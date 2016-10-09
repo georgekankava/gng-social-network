@@ -33,7 +33,7 @@ public class FriendsController {
         try {
             List<User> friends = friendsService.getUsersFriends(userId);
             mav.addObject("friendsList", friends);
-        } catch (EmptyListException e) {
+        } catch (Exception e) {
             logger.error(e.getMessage(), e);
         }
         return mav;

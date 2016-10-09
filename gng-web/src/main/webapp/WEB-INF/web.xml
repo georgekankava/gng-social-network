@@ -65,6 +65,7 @@
     <url-pattern>/like-unlike-post.ajax</url-pattern>
     <url-pattern>/j_spring_security_check</url-pattern>
     <url-pattern>/show-post-like-friends-list.ajax</url-pattern>
+    <url-pattern>/user-friends</url-pattern>
   </filter-mapping>
   <filter>
     <filter-name>springSecurityFilterChain</filter-name>
