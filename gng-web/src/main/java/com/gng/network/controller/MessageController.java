@@ -40,8 +40,7 @@ public class MessageController {
     public String home(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, 
     		@RequestParam Integer userFromId, @RequestParam Integer userToId, @RequestParam Long fromMillies) {
     	try {
-			String jsonMessages = messageService.getJsonMessages(userFromId, userToId, fromMillies);
-			return jsonMessages;
+			return messageService.getJsonMessages(userFromId, userToId, fromMillies);
 		} catch (UserNotFoundException e) {
 			logger.info(e.getMessage());
 		} catch (MessageNotFoundException e) {

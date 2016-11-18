@@ -16,13 +16,7 @@ public class GreetController {
 	
 	@RequestMapping(value = "greet.html", method = RequestMethod.GET)
 	public String greet(Model model) {
-		model.addAttribute("greet", new Test());
 		return "greet";
 	}
 	
-	public class Test {
-		public String getValue() {
-			return "this is value";
-		}
-	}
 }

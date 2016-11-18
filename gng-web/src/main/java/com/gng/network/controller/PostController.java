@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
@@ -153,20 +155,19 @@ public class PostController {
 	    	        List<String> content = new ArrayList<String>();
 	    	        StringBuilder pageContent = new StringBuilder();
 	    	        String hostUrl = url.getProtocol() + "://" + url.getHost() + ":" + (url.getDefaultPort() != -1 ? url.getDefaultPort() : "");
-	    	        while ((inputLine = in.readLine()) != null) {
-	    	        	pageContent.append(inputLine);
-	    	            content.add(inputLine);
+            	    	        while ((inputLine = in.readLine()) != null) {
+            	    	        	pageContent.append(inputLine);
+                    	    	            content.add(inputLine);
 	    	        }
 	    	        in.close();
 	    	        String pageMetaDescription = "";
 	    	        String htmlMetaOpenerTag = messageSource.getMessage("post.url.meta.tag", null, "<meta", null);
 	    	        String htmlMetaTagNameAttribute = messageSource.getMessage("post.url.meta.tag.name.attribute", null, "name=\"description\"", null);
 	    	        for(String contentLine : content) {
-	    	        	contentLine = contentLine.toLowerCase();
-	    	        	if(contentLine.indexOf(htmlMetaOpenerTag.toLowerCase()) != -1) {
-	    	        		if(contentLine.indexOf(htmlMetaTagNameAttribute.toLowerCase()) != -1) {
+	    	        	if(contentLine.toLowerCase().indexOf(htmlMetaOpenerTag.toLowerCase()) != -1) {
+	    	        		if(contentLine.toLowerCase().indexOf(htmlMetaTagNameAttribute.toLowerCase()) != -1) {
 	    	        			String metaTagContentAttribute = messageSource.getMessage("post.url.meta.tag.content.attribute", null, "content=\"", null).toLowerCase();
-	    	        			int contentAttributeStartIndex = contentLine.indexOf(metaTagContentAttribute);
+	    	        			int contentAttributeStartIndex = contentLine.toLowerCase().indexOf(metaTagContentAttribute);
 	    	        			if(contentAttributeStartIndex != -1) {
 	    	        				contentAttributeStartIndex += metaTagContentAttribute.length();
 	    	        				int contentAttributeEndindex = contentLine.indexOf("\"", contentAttributeStartIndex);
@@ -181,38 +182,48 @@ public class PostController {
 	    	        				}
 	    	        			}
 	    	        		}
-	    	        	} if(contentLine.indexOf("<img") != -1) {
-	    	        		String srcAttributeNameWithDoubleQuote = messageSource.getMessage("html.img.tag.src.attribute.name.with.double.quote", null, " src=\"", null);
-	    	        		String srcAttributeNameWithSingleQuote = messageSource.getMessage("html.img.tag.src.attribute.name.with.single.quote", null, " src='", null);
-	    	        		String srcAttributeName = messageSource.getMessage("html.img.tag.src.attribute.name.with.single.quote", null, "src", null);
-	    	        		int srcAttributeStartIndex = contentLine.indexOf(srcAttributeNameWithDoubleQuote);
-	    	        		if(srcAttributeStartIndex == -1) {
-	    	        			srcAttributeStartIndex = contentLine.indexOf(srcAttributeNameWithSingleQuote);
-	    	        		}
-	    	        		// add length of the search string
-	    	        		srcAttributeStartIndex += srcAttributeNameWithDoubleQuote.length();
-	    	        		int srcAttributeEndIndex = contentLine.indexOf("\"", srcAttributeStartIndex);
-	    	        		// in case it starts with '
-	    	        		if(srcAttributeEndIndex == -1) {
-	    	        			// adding =" or ='
-	    	        			srcAttributeEndIndex = contentLine.indexOf("\'", srcAttributeStartIndex);
-	    	        		}
-	    	        		if(srcAttributeStartIndex != -1) {
-	    	        			HTMLTag htmlTag = new HTMLTag();
-	    	        			htmlTag.setTagName("img");
-	    	        			String srcAttributeValue = contentLine.substring(srcAttributeStartIndex, srcAttributeEndIndex);
-	    	        			htmlTag.addAttribute(srcAttributeName, hostUrl + srcAttributeValue);
-	    	        			htmlTags.add(htmlTag);
-	    	        		}
 	    	        	}
+                        int contentLineIndex = 0;
+                        while ((contentLineIndex = contentLine.toLowerCase().indexOf("<img", contentLineIndex + "<img".length())) != -1) {
+                            String srcAttributeNameWithDoubleQuote = messageSource.getMessage("html.img.tag.src.attribute.name.with.double.quote", null, " src=\"", null);
+                            String srcAttributeNameWithSingleQuote = messageSource.getMessage("html.img.tag.src.attribute.name.with.single.quote", null, " src='", null);
+                            String srcAttributeName = messageSource.getMessage("html.img.tag.src.attribute.name.with.single.quote", null, "src", null);
+                            int srcAttributeStartIndex = contentLine.toLowerCase().indexOf(srcAttributeNameWithDoubleQuote, contentLineIndex);
+                            if (srcAttributeStartIndex == -1) {
+                                srcAttributeStartIndex = contentLine.toLowerCase().indexOf(srcAttributeNameWithSingleQuote, contentLineIndex);
+                            }
+                            // add length of the search string
+                            srcAttributeStartIndex += srcAttributeNameWithDoubleQuote.length();
+                            int srcAttributeEndIndex = contentLine.indexOf("\"", srcAttributeStartIndex);
+                            // in case it starts with '
+                            if (srcAttributeEndIndex == -1) {
+                                // adding =" or ='
+                                srcAttributeEndIndex = contentLine.indexOf("\'", srcAttributeStartIndex);
+                            }
+                            if (srcAttributeStartIndex != -1) {
+                                HTMLTag htmlTag = new HTMLTag();
+                                htmlTag.setTagName("img");
+                                String srcAttributeValue = contentLine.substring(srcAttributeStartIndex, srcAttributeEndIndex);
+                                URI uri = new URI(srcAttributeValue);
+                                if (uri.isAbsolute()) {
+                                    htmlTag.addAttribute(srcAttributeName, srcAttributeValue);
+                                } else {
+                                    htmlTag.addAttribute(srcAttributeName, hostUrl + srcAttributeValue);
+                                }
+
+                                htmlTags.add(htmlTag);
+                            }
+                        }
 	    	        }
 	    	}
     	} catch (MalformedURLException e) {
     		logger.info(e.getMessage());
     	} catch (IOException e) {
     		logger.info(e.getMessage());
-    	}
-    	return htmlTags;
+    	} catch (URISyntaxException e) {
+            logger.info(e.getMessage());
+        }
+        return htmlTags;
     }
     
     @RequestMapping(value = "/show-post-like-friends-list.ajax")
