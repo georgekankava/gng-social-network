@@ -90,8 +90,7 @@ public class UserHelper {
 	
 	public String convertUsersToJsonString(List<UsersResponseJson> users) {
 		try {
-			String jsonUsers = mapper.writeValueAsString(users);
-			return jsonUsers;
+			return mapper.writeValueAsString(users);
 		} catch (JsonGenerationException e) {
 			logger.info(e.getMessage());
 		} catch (JsonMappingException e) {

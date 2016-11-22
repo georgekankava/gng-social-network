@@ -71,8 +71,7 @@ public class UserServiceImpl implements UserService {
 	public String searchUsersBySearchString(String searchString) {
 		List<User> users = userDao.searchUsersBySearchString(searchString);
 		List<UsersResponseJson> convertedUsers = helper.convertUsersToJsonUsers(users);
-		String jsonUsers = helper.convertUsersToJsonString(convertedUsers);
-		return jsonUsers;
+		return helper.convertUsersToJsonString(convertedUsers);
 	}
 
 	public List<User> findUserByFullname(String fullname) {
