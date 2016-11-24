@@ -1,29 +1,37 @@
 package com.gng.network.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.util.Arrays;
+import java.util.List;
+
+import org.atmosphere.cpr.AtmosphereResource;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.BDDMockito;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.stubbing.Answer;
+import org.springframework.context.MessageSource;
+
 import com.gng.network.dao.UserDao;
+import com.gng.network.enities.Image;
 import com.gng.network.enities.User;
 import com.gng.network.exceptions.PasswordNotMatchException;
 import com.gng.network.exceptions.UserNotFoundException;
 import com.gng.network.helper.UserHelper;
 import com.gng.network.json.response.UsersResponseJson;
 import com.gng.network.service.impl.UserServiceImpl;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.context.MessageSource;
-
-import javax.inject.Inject;
-import javax.persistence.PersistenceException;
-
-import java.util.Arrays;
-import java.util.List;
-
-import static org.mockito.Mockito.*;
-import static org.junit.Assert.*;
-import static org.assertj.core.api.Assertions.assertThat;
+import com.gng.network.singletones.AtmosphereConnectionUuids;
 
 /**
  * Created by georgekankava on 11/22/16.
@@ -84,6 +92,50 @@ public class UserServiceImplTest {
     }
 
     @Test
+    public void testFindUserImageByImageId() {
+        when(userDao.findUserImageByImageId(anyInt())).thenReturn(new Image());
+        Image image = userService.findUserImageByImageId(anyInt());
+        assertThat(image).isNotNull();
+    }
+
+    @Test
+    public void testGetUserImages() {
+        when(userDao.getUserImagesById(anyInt())).thenReturn(Arrays.asList(new Image(), new Image()));
+        List<Image> userImages = userService.getUserImages(anyInt());
+        assertThat(userImages.size()).isEqualTo(2);
+    }
+
+    @Test
+    public void testFindUserProfileImage() {
+        when(userDao.findUserProfileImage(anyInt())).thenReturn(new Image());
+        Image image = userService.findUserProfileImage(anyInt());
+        assertThat(image).isNotNull();
+    }
+
+    @Test
+    public void testPersistImage() {
+        userService.addImage(new Image());
+    }
+
+    @Test
+    public void testUpdateUsersOnlineStatuses() {
+//        AtmosphereConnectionUuids atmosphereConnectionUuids = mock(AtmosphereConnectionUuids.class);
+//        AtmosphereResource atmosphereResource1 = mock(AtmosphereResource.class);
+//        when(atmosphereResource1.isCancelled()).thenReturn(true);
+//        when(atmosphereConnectionUuids.getResource(1)).thenReturn(atmosphereResource1);
+//        AtmosphereResource atmosphereResource2 = mock(AtmosphereResource.class);
+//        when(atmosphereResource2.isCancelled()).thenReturn(false);
+//        when(atmosphereConnectionUuids.getResource(2)).thenReturn(atmosphereResource2);
+        User user1 = mock(User.class);
+        User user2 = mock(User.class);
+        when(user1.getId()).thenReturn(1);
+        when(user2.getId()).thenReturn(2);
+        List<User> updatedUsers = userService.updateUsersOnlineStatuses(Arrays.asList(user1, user2));
+        assertThat(updatedUsers.get(0).isOnline()).isEqualTo(false);
+        assertThat(updatedUsers.get(1).isOnline()).isEqualTo(false);
+    }
+    
+    @Test
     public void testGetUsersFriends() {
         List<User> userFriends = userService.getUsersFriends(user);
         assertThat(userFriends.size()).isEqualTo(3);
@@ -115,7 +167,9 @@ public class UserServiceImplTest {
 
     @Test(expected = UserNotFoundException.class)
     public void testFindUserByUsernameThrowsException() throws UserNotFoundException {
-        userService.findUserByUsername("falseUsername");
+        User userByUsername = userService.findUserByUsername("falseUsername");
+        assertThat(userByUsername).isNull();
+        verify(userDao, times(1)).findUserByUsername("falseUsername");
     }
 
     @Test

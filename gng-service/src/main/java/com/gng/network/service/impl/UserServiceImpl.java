@@ -123,9 +123,9 @@ public class UserServiceImpl implements UserService {
 			AtmosphereResource atmosphereResource = AtmosphereConnectionUuids.getInstance().getResource(user.getId());
 			if(atmosphereResource != null) {
 				if(atmosphereResource.isCancelled()) {
-					helper.setUserOffline(user);
+					user.setOnline(false);
 				} else {
-					helper.setUserOnile(user);
+					user.setOnline(true);
 				}
 			}
 		}
@@ -150,7 +150,6 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public Image findUserImageByImageId(Integer imageId) {
-		Image image = userDao.findUserImageByImageId(imageId);
-		return image;
+		return userDao.findUserImageByImageId(imageId);
 	}
 }
