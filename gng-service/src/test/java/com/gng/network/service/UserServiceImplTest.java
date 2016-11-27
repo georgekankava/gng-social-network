@@ -1,26 +1,24 @@
 package com.gng.network.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.anyInt;
+import static org.mockito.Mockito.withSettings;
 
 import java.util.Arrays;
 import java.util.List;
 
-import org.atmosphere.cpr.AtmosphereResource;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.mockito.stubbing.Answer;
+import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.context.MessageSource;
 
 import com.gng.network.dao.UserDao;
@@ -31,7 +29,6 @@ import com.gng.network.exceptions.UserNotFoundException;
 import com.gng.network.helper.UserHelper;
 import com.gng.network.json.response.UsersResponseJson;
 import com.gng.network.service.impl.UserServiceImpl;
-import com.gng.network.singletones.AtmosphereConnectionUuids;
 
 /**
  * Created by georgekankava on 11/22/16.
@@ -56,16 +53,16 @@ public class UserServiceImplTest {
     @InjectMocks
     private UserServiceImpl userService;
 
-    private List userResponseJson = Arrays.asList(new UsersResponseJson(), new UsersResponseJson());
+    private List<UsersResponseJson> userResponseJson = Arrays.asList(new UsersResponseJson(), new UsersResponseJson());
 
-    private List users = Arrays.asList(new User(), new User());
+    private List<User> users = Arrays.asList(new User(), new User());
 
     @Mock
     private User user;
 
     @Before
     public void before() {
-        User userById = mock(User.class);
+        User userById = mock(User.class, withSettings().serializable());
         User user1 = mock(User.class);
         User user2 = mock(User.class);
         User user3 = mock(User.class);
