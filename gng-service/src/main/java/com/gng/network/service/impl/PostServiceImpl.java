@@ -179,15 +179,11 @@ public class PostServiceImpl implements PostService {
 
 	@Override
 	public PostLikeJsonResponse unlikePost(Integer userId, Integer postId) throws UserNotFoundException, PostNotFoundException, NullPostIdException, NoSuchMessageException, NullUserIdException, NullObjectIdException, NullResultException {
-		try {
-			if(userId == null || userId == 0) {
-				throw new NullUserIdException("User Id cannot be null");
-			}
-			if(postId == null || postId == 0) {
-				throw new NullPostIdException("Post Id cannot be null");
-			}
-		} catch(NullPostIdException ex) {
-			logger.info(ex.getMessage());
+		if(userId == null || userId == 0) {
+			throw new NullUserIdException("User Id cannot be null");
+		}
+		if(postId == null || postId == 0) {
+			throw new NullPostIdException("Post Id cannot be null");
 		}
 		try {
 			User user = userService.findUserById(userId);

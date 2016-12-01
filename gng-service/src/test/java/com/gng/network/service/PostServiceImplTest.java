@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.gng.network.exceptions.CommentNotFoundException;
 import com.gng.network.exceptions.NullObjectException;
+import com.gng.network.exceptions.NullObjectIdException;
 import com.gng.network.exceptions.NullPostIdException;
 import com.gng.network.exceptions.NullResultException;
 import com.gng.network.exceptions.NullUserIdException;
@@ -177,7 +178,49 @@ public class PostServiceImplTest {
 	}
 
 	@Test
-	public final void testUnlikePost() {
+	public final void testUnlikePost() throws UserNotFoundException, NullUserIdException, NullPostIdException, PostNotFoundException, NullResultException, NullObjectIdException {
+		User user = mock(User.class);
+		Post post = mock(Post.class);
+		PostLike postLike = mock(PostLike.class);
+		when(user.getId()).thenReturn(123);
+		when(post.getId()).thenReturn(123);
+		when(postLike.getId()).thenReturn(123);
+		when(userService.findUserById(1)).thenReturn(user).thenReturn(user).thenThrow(UserNotFoundException.class).thenReturn(user);
+		when(postDao.findPostById(1)).thenReturn(post).thenReturn(post).thenThrow(PostNotFoundException.class);
+		when(postDao.findPostLikeByUserAndPostIds(1, 1)).thenReturn(postLike).thenReturn(null);
+		when(messageSource.getMessage("post.like.null.result.exception.message", new Object[] {1, 1}, null)).thenReturn("Post like is null.");
+		when(messageSource.getMessage("post.like.response.text.post.unliked", null, null)).thenReturn("testResponse");
+
+		postServiceImpl.unlikePost(1, 1);
+		try {
+			postServiceImpl.unlikePost(1, 1);
+		} catch (Exception e) {
+			assertThat(e).isInstanceOf(NullResultException.class).hasMessage("Post like is null.");
+		}
+
+		try {
+			postServiceImpl.unlikePost(1, 1);
+		} catch (Exception e) {
+			assertThat(e).isInstanceOf(UserNotFoundException.class);
+		}
+
+		try {
+			postServiceImpl.unlikePost(1, 1);
+		} catch (Exception e) {
+			assertThat(e).isInstanceOf(PostNotFoundException.class);
+		}
+
+		try {
+			postServiceImpl.unlikePost(null, 1);
+		} catch (Exception e) {
+			assertThat(e).isInstanceOf(NullUserIdException.class);
+		}
+
+		try {
+			postServiceImpl.unlikePost(1, null);
+		} catch (Exception e) {
+			assertThat(e).isInstanceOf(NullPostIdException.class);
+		}
 	}
 
 }
