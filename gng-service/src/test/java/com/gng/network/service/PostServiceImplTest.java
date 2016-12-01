@@ -4,18 +4,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.gng.network.exceptions.CommentNotFoundException;
+import com.gng.network.exceptions.NullObjectException;
+import com.gng.network.exceptions.NullPostIdException;
+import com.gng.network.exceptions.NullResultException;
+import com.gng.network.exceptions.NullUserIdException;
 import com.gng.network.exceptions.PostNotFoundException;
 import org.junit.BeforeClass;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 import org.springframework.context.MessageSource;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -28,7 +28,7 @@ import com.gng.network.helper.UserHelper;
 import com.gng.network.service.impl.PostServiceImpl;
 
 import static org.mockito.Mockito.*;
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PostServiceImplTest {
@@ -120,17 +120,60 @@ public class PostServiceImplTest {
 		verify(userService).findUserByUsername("username");
 	}
 
-	@Test
-	public final void testRemoveComment() {
-
+	@Test(expected = IllegalArgumentException.class)
+	public final void testRemoveComment() throws CommentNotFoundException {
+		postServiceImpl.removeComment(1);
+		postServiceImpl.removeComment(null);
 	}
 
-	@Test
-	public final void testFindCommentById() {
+	@Test(expected = IllegalArgumentException.class)
+	public final void testFindCommentById() throws CommentNotFoundException {
+		postServiceImpl.findCommentById(1);
+		postServiceImpl.findCommentById(null);
 	}
 
-	@Test
-	public final void testLikePost() {
+	@Test(expected = NullUserIdException.class)
+	public final void testLikePost() throws UserNotFoundException, NullUserIdException, NullPostIdException, PostNotFoundException, NullResultException, NullObjectException {
+		Post post = mock(Post.class);
+		PostLike postLike = mock(PostLike.class);
+		User user = mock(User.class);
+		when(postLike.getUser()).thenReturn(user);
+		when(postLike.getPost()).thenReturn(post);
+		when(postLike.getPost().getId()).thenReturn(1);
+		when(postLike.getPost().getLikes()).thenReturn(Arrays.asList(new PostLike(), new PostLike()));
+		when(postLike.getUser().getId()).thenReturn(1);
+		when(postDao.findPostLikeByUserAndPostIds(1, 1)).thenReturn(postLike).thenReturn(null).thenReturn(null).thenReturn(null).thenReturn(null);
+		when(userService.findUserById(1)).thenReturn(user).thenThrow(UserNotFoundException.class).thenReturn(user).thenReturn(user);
+		when(postDao.findPostById(1)).thenReturn(post).thenReturn(null).thenReturn(post);
+		when(messageSource.getMessage("post.like.response.text.post.liked", null, null)).thenReturn("testValue");
+
+		postServiceImpl.likePost(1, 1);
+		postServiceImpl.likePost(1, 1);
+		try {
+			postServiceImpl.likePost(1, 1);
+		} catch (Exception e) {
+			assertThat(e).isInstanceOf(UserNotFoundException.class);
+		}
+		try {
+			postServiceImpl.likePost(1, 1);
+		} catch (Exception e) {
+			assertThat(e).isInstanceOf(PostNotFoundException.class);
+		}
+
+		doThrow(NullObjectException.class).when(postDao).savePostLike(any(PostLike.class));
+
+		try {
+			postServiceImpl.likePost(1, 1);
+		} catch (Exception e) {
+			assertThat(e).isInstanceOf(NullObjectException.class);
+		}
+
+		try {
+			postServiceImpl.likePost(1, null);
+		} catch (Exception e) {
+			assertThat(e).isInstanceOf(NullPostIdException.class).hasMessage("Post Id cannot be null");
+		}
+		postServiceImpl.likePost(null, 1);
 	}
 
 	@Test

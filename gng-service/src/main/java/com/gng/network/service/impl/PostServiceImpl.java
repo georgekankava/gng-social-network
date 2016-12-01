@@ -119,7 +119,9 @@ public class PostServiceImpl implements PostService {
 
 	@Transactional(propagation=Propagation.REQUIRED)
 	public void removeComment(Integer commentId) throws CommentNotFoundException {
-		if(commentId == null) throw new IllegalArgumentException("commentId cannot be null");
+		if(commentId == null) {
+			throw new IllegalArgumentException("commentId cannot be null");
+		}
 		postDao.removeComment(commentId);
 	}
 
@@ -132,15 +134,11 @@ public class PostServiceImpl implements PostService {
 
 	@Override
 	public PostLikeJsonResponse likePost(Integer userId, Integer postId) throws UserNotFoundException, PostNotFoundException, NullPostIdException, NoSuchMessageException, NullObjectException, NullUserIdException, NullResultException {
-		try {
-			if(userId == null || userId == 0) {
-				throw new NullUserIdException("User Id cannot be null");
-			}
-			if(postId == null || postId == 0) {
-				throw new NullPostIdException("Post Id cannot be null");
-			}
-		} catch(NullPostIdException ex) {
-			logger.info(ex.getMessage());
+		if(userId == null || userId == 0) {
+			throw new NullUserIdException("User Id cannot be null");
+		}
+		if(postId == null || postId == 0) {
+			throw new NullPostIdException("Post Id cannot be null");
 		}
 		try {
 			PostLike postLike = postDao.findPostLikeByUserAndPostIds(userId, postId);
