@@ -89,7 +89,7 @@ public class MessageServiceImpl implements MessageService {
 			messageMillies = maxMessageMillies(userFrom, userTo, messageMillies);
 			if(messageMillies == null) {
 				break;
-			} 
+			}
 			messagesUserFrom = messageDao.getMessages(userFrom, userTo, messageMillies - WebConstants.TWENTYFOUR_HOURS, messageMillies);
 			messagesUserTo = messageDao.getMessages(userTo, userFrom, messageMillies - WebConstants.TWENTYFOUR_HOURS, messageMillies);
 			messages.addAll(messagesUserFrom);

@@ -1,6 +1,7 @@
 package com.gng.network.service.impl;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -119,6 +120,7 @@ public class UserServiceImpl implements UserService {
 	
 	@Transactional
 	public List<User> updateUsersOnlineStatuses(List<User> users) {
+		List<User> usersList = new LinkedList<User>();
 		for(User user : users) {
 			AtmosphereResource atmosphereResource = AtmosphereConnectionUuids.getInstance().getResource(user.getId());
 			if(atmosphereResource != null) {
@@ -128,8 +130,9 @@ public class UserServiceImpl implements UserService {
 					user.setOnline(true);
 				}
 			}
+			usersList.add(user);
 		}
-		return users;
+		return usersList;
 	}
 	
 	@Transactional

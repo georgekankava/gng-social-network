@@ -77,7 +77,7 @@ function openChatWindow(friendId, friendFullname) {
 	var width = $(window).width() - 250 * activeChatWindowCount;
 	var height = $(window).height() - 315;
 	$('#chat').append(
-		$('<div id="chat-window-box-' + friendId + '">').addClass('chat-window-box').attr('style', 'left:' + width + 'px;top:' + height + 'px;' ).append(
+		$('<div id="chat-window-box-' + friendId + '">').addClass('chat-window-box').attr('style', 'position:fixed; left:' + width + 'px;top:' + height + 'px;' ).append(
 			$('<div id="chat-window-' + friendId + '">').addClass('chat-window').attr('style', 'overflow-y: scroll' )
 		).append(
 			$('<div class="chat-window-input">').append(

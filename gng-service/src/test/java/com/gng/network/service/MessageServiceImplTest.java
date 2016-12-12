@@ -1,6 +1,7 @@
 package com.gng.network.service;
 
 
+import com.gng.network.constants.WebConstants;
 import com.gng.network.dao.MessageDao;
 import com.gng.network.enities.User;
 import com.gng.network.helper.MessageHelper;
@@ -16,6 +17,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import javax.inject.Inject;
+
+import java.lang.reflect.Array;
+import java.util.Arrays;
 
 import static org.mockito.Mockito.*;
 
@@ -59,12 +63,27 @@ public class MessageServiceImplTest {
 
     @Test
     public void removeMessage() throws Exception {
-
+        messageService.removeMessage(1);
     }
 
     @Test
     public void getJsonMessages() throws Exception {
+        long messageMillies = 1000L;
+        User fromUser = mock(User.class);
+        User toUser = mock(User.class);
+        com.gng.network.enities.Message message1 = mock(com.gng.network.enities.Message.class);
+        com.gng.network.enities.Message message2 = mock(com.gng.network.enities.Message.class);
+        com.gng.network.enities.Message message3 = mock(com.gng.network.enities.Message.class);
+        com.gng.network.enities.Message message4 = mock(com.gng.network.enities.Message.class);
+        when(userService.findUserById(1)).thenReturn(fromUser);
+        when(userService.findUserById(2)).thenReturn(toUser);
+        when(messageDao.getMessages(fromUser, toUser, messageMillies - WebConstants.TWENTYFOUR_HOURS, messageMillies)).thenReturn(Arrays.asList(message1, message2));
+        when(messageDao.getMessages(toUser, fromUser, messageMillies - WebConstants.TWENTYFOUR_HOURS, messageMillies)).thenReturn(Arrays.asList(message3, message4));
+        when(messageDao.getMessages(fromUser, toUser, messageMillies - WebConstants.TWENTYFOUR_HOURS, messageMillies)).thenReturn(Arrays.asList(message1, message2));
+        when(messageDao.getMessages(toUser, fromUser, messageMillies - WebConstants.TWENTYFOUR_HOURS, messageMillies)).thenReturn(Arrays.asList(message3, message4));
+        when(messageDao.getMessageMaxTime(fromUser, toUser)).thenReturn(2000L);
 
+        messageService.getJsonMessages(1, 1, 1000L);
     }
 
 }

@@ -49,7 +49,6 @@
 					</div>	
 				 </div>
 				 <div>
-					<sec:authentication property="principal.friends" var="friends" />
 					<div id="friends-content" class="friends-box">
 					<div class="vertical-menu-header" style="margin-top:0px;">
 						Friends
@@ -58,17 +57,17 @@
 						<div class="vertical-menu-inner friends-vertical-menu" style="height:120px;overflow:auto;">
 							<c:forEach var="friend" items="${friends}">
 							<c:choose>
-								<c:when test="${friend.online }">
+								<c:when test="${friend.online eq true}">
 								<div>
-									<a href="profile?userId=${friend.id }">${friend.fullname}</a>
+									<a href="profile?userId=${friend.id }">${friend.fullname} </a>
 									<a onclick="openChatWindow('${friend.id}', '${friend.fullname}');">
 										<img alt="write message" width="25px" src="resources/images/write_message.jpg" />
 									</a>
-								</div>	
+								</div>
 								</c:when>
 								<c:otherwise>
-									<div><a href="profile?userId=${friend.id }">${friend.fullname}</a></div>
-								</c:otherwise>			
+									<div><a href="profile?userId=${friend.id }">${friend.fullname} </a></div>
+								</c:otherwise>
 							</c:choose>
 							</c:forEach>
 						</div>
@@ -178,6 +177,7 @@
 			</div>
 			<div class="col-md-3"></div>
 		</div>
+		<div id="chat" />
 	</div>
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="//code.jquery.com/jquery.js"></script>

@@ -81,7 +81,7 @@ public class MainController {
     		postService.getFriendsActivePosts(userId, mav);
 			User user = userService.findUserById(userId);
 			List<FriendRequest> friendRequests = friendRequestService.getPendingRequests(userId);
-			mav.addObject("friends", userService.updateUsersOnlineStatuses(user.getFriends()));
+			mav.addObject("friends", userService.updateUsersOnlineStatuses(formUser.getFriends()));
 			List<Event> events = eventService.getActiveEvents(userId);
 			mav.addObject("friendRequests", friendRequests);
 			mav.addObject("events", events);
@@ -126,11 +126,9 @@ public class MainController {
 	@RequestMapping(value = "/search-people.ajax", method=RequestMethod.GET)
     public String searchPeople(@RequestParam String searchString) {
     	if(pattern.matcher(searchString).matches()) {
-    		String responserJson =  userService.searchUsersBySearchString(searchString);
-        	return responserJson;
+    		return userService.searchUsersBySearchString(searchString);
     	}
-    	String responseMessage = messageSource.getMessage("user.search.regex.invalid", null, null);
-    	return responseMessage;
+    	return messageSource.getMessage("user.search.regex.invalid", null, null);
     }
 	
 	@RequestMapping(value = "/register-user.html", method = RequestMethod.POST)
