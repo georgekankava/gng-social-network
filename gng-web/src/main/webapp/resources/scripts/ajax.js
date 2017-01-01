@@ -241,7 +241,7 @@ function getMessages(userId,friendUserId,millies,initial) {
 			  if(initial) {
 				  $.each(json.messages, function(index, message) {
 				  if(message.author == $('#userId').html()) {
-					  addMessage(message.authorFullname, message.receiver, message.message, 'blue', new Date(message.time));
+					  addMessage(message.authorFullname, message.receiver, message.message, '#767676', new Date(message.time));
 				  } else {
 					  addMessage(message.authorFullname, message.author, message.message, '#000', new Date(message.time));
 				  }
@@ -250,7 +250,7 @@ function getMessages(userId,friendUserId,millies,initial) {
 			  } else {
 				  $(json.messages).reverse().each(function(index, message) {
 					  if(message.author == $('#userId').html()) {
-						  prependMessage(message.authorFullname, message.receiver, message.message, 'blue', new Date(message.time));
+						  prependMessage(message.authorFullname, message.receiver, message.message, '#767676', new Date(message.time));
 					  } else {
 						  prependMessage(message.authorFullname, message.author, message.message, '#000', new Date(message.time));
 					  }

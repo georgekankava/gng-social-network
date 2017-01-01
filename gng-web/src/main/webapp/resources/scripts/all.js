@@ -74,40 +74,55 @@ function showSearchList(users) {
 }
 
 function openChatWindow(friendId, friendFullname) {
-	var width = $(window).width() - 250 * activeChatWindowCount;
-	var height = $(window).height() - 315;
-	$('#chat').append(
-		$('<div id="chat-window-box-' + friendId + '">').addClass('chat-window-box').attr('style', 'position:fixed; left:' + width + 'px;top:' + height + 'px;' ).append(
-			$('<div id="chat-window-' + friendId + '">').addClass('chat-window').attr('style', 'overflow-y: scroll' )
-		).append(
-			$('<div class="chat-window-input">').append(
-				$('<input>').attr('id', 'chat-input-' + friendId).attr('type', 'text')
-			)
-		)
-	);
-	$('#chat-input-' + friendId).keydown(function(e) {  if (e.keyCode === 13) {
-
-        var msg = $(this).val();
-        var userId = $('#userId').html();
-
-        subSocket.push(jQuery.stringifyJSON({ author: userId, receiver: friendId , message: msg }));
-        $(this).val('');
-        var fullname =  $('#fullname').html();
-        addMessage(fullname, friendId, msg, 'blue', new Date());
-        scrollChatWindowBottom(friendId);
-	}});
-	getMessages($('#userId').html(),friendId,lastMessageMillies,true);
-	$('#chat-window-' + friendId).scroll(function() {
-		if($('#chat-window-' + friendId).scrollTop() === 0) {
-			getMessages($('#userId').html(),friendId,lastMessageMillies,false);
-		}
-	});
-	scrollChatWindowBottom(friendId);
-	$('#chat-input-' + friendId).focus();
-	activeChatWindowCount++;
+	if($('#chat-window-box-' + friendId).length === 0) {
+		doOpenChatWindow(friendId, friendFullname);
+	} else {
+		$('#chat-window-box-' + friendId).show();
+	}
 	
 }
 
+function doOpenChatWindow(friendId, friendFullname) {
+	var width = $(window).width() -280 * activeChatWindowCount;
+	var height = $(window).height() - 315;
+	$('#chat').append(
+			$('<div id="chat-window-box-' + friendId + '">').addClass('chat-window-box').attr('style', 'position:fixed; left:' + width + 'px;top:' + height + 'px;' ).append(
+				$('<div id="chat-window-header-' + friendId + '">')
+					.addClass('chat-window-header')
+					.html("<a href='profile?userId=" + friendId + "'>" + friendFullname + "</a><span id='chat-window-header-close-button-" + friendId + "' class='chat-window-header-close-button'>X</span>")
+			).append(
+				$('<div id="chat-window-' + friendId + '">').addClass('chat-window').attr('style', 'overflow-y: scroll' )
+			).append(
+				$('<div class="chat-window-input">').append(
+					$('<input>').attr('id', 'chat-input-' + friendId).attr('type', 'text').attr('style', 'width: 240px; height: 23px;')
+				)
+			)
+		);
+		$("#chat-window-header-close-button-" + friendId).click(function(e) {
+			$("#chat-window-box-" + friendId).hide();
+			activeChatWindowCount--;
+		});
+		$('#chat-input-' + friendId).keydown(function(e) {  if (e.keyCode === 13) {
+	
+	        var msg = $(this).val();
+	        var userId = $('#userId').html();
+	
+	        subSocket.push(jQuery.stringifyJSON({ author: userId, receiver: friendId , message: msg }));
+	        $(this).val('');
+	        var fullname =  $('#fullname').html();
+	        addMessage(fullname, friendId, msg, 'blue', new Date());
+	        scrollChatWindowBottom(friendId);
+		}});
+		getMessages($('#userId').html(),friendId,lastMessageMillies,true);
+		$('#chat-window-' + friendId).scroll(function() {
+			if($('#chat-window-' + friendId).scrollTop() === 0) {
+				getMessages($('#userId').html(),friendId,lastMessageMillies,false);
+			}
+		});
+		scrollChatWindowBottom(friendId);
+		$('#chat-input-' + friendId).focus();
+		activeChatWindowCount++;
+}
 function addMessage(fullname, friendId, message, color, datetime) {
     $('#chat-window-' + friendId).append('<div><span style="color:' + color + '">' + fullname + '</span> @ ' +
         + (datetime.getHours() < 10 ? '0' + datetime.getHours() : datetime.getHours()) + ':'

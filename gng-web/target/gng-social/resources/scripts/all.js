@@ -81,7 +81,7 @@ function openChatWindow(friendId, friendFullname) {
 			$('<div id="chat-window-' + friendId + '">').addClass('chat-window').attr('style', 'overflow-y: scroll' )
 		).append(
 			$('<div class="chat-window-input">').append(
-				$('<input>').attr('id', 'chat-input-' + friendId).attr('type', 'text')
+				$('<input>').attr('id', 'chat-input-' + friendId).attr('type', 'text').attr('style', 'width: 255px; height: 18px;')
 			)
 		)
 	);
