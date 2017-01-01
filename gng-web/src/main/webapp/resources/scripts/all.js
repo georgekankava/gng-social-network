@@ -36,13 +36,11 @@ function hideSearchBox() {
 }
 
 $(window).resize(function() {
-	var activeWindowCount = 1;
 	setSearchListPosition();
 	$.each($('#chat').children(), function(index, value) {
-		var width = $(window).width() - 230 * activeWindowCount;
+		var width = $(window).width() - 280;
 		var height = $(window).height() - 315;
-		$(value).addClass('chat-window').attr('style', 'left:' + width + 'px;top:' + height + 'px' );
-		activeWindowCount++;
+		$(value).attr('style', 'position:fixed; left:' + width + 'px;top:' + height + 'px;' );
 	});
 });
 
@@ -83,7 +81,7 @@ function openChatWindow(friendId, friendFullname) {
 }
 
 function doOpenChatWindow(friendId, friendFullname) {
-	var width = $(window).width() -280 * activeChatWindowCount;
+	var width = $(window).width() - 260 * activeChatWindowCount;
 	var height = $(window).height() - 315;
 	$('#chat').append(
 			$('<div id="chat-window-box-' + friendId + '">').addClass('chat-window-box').attr('style', 'position:fixed; left:' + width + 'px;top:' + height + 'px;' ).append(
@@ -113,10 +111,10 @@ function doOpenChatWindow(friendId, friendFullname) {
 	        addMessage(fullname, friendId, msg, 'blue', new Date());
 	        scrollChatWindowBottom(friendId);
 		}});
-		getMessages($('#userId').html(),friendId,lastMessageMillies,true);
+		getMessages($('#userId').html(), friendId, 0, true);
 		$('#chat-window-' + friendId).scroll(function() {
 			if($('#chat-window-' + friendId).scrollTop() === 0) {
-				getMessages($('#userId').html(),friendId,lastMessageMillies,false);
+				getMessages($('#userId').html(), friendId, lastMessageMillies, false);
 			}
 		});
 		scrollChatWindowBottom(friendId);
