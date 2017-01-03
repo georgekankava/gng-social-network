@@ -257,7 +257,7 @@ function getMessages(userId,friendUserId,millies,initial) {
 					  
 		          });
 			  }
-			  lastMessageMillies = json.messageMillies;
+			  lastMessageMilliesArray[friendUserId] = json.messageMillies;
 			  // if initial scroll to bottom
 			  if(initial) {
 			    scrollChatWindowBottom(friendUserId);

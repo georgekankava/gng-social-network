@@ -58,15 +58,13 @@
 							<c:forEach var="friend" items="${friends}">
 							<c:choose>
 								<c:when test="${friend.online eq true}">
-								<div>
-									<a href="profile?userId=${friend.id }">${friend.fullname} </a>
-									<a onclick="openChatWindow('${friend.id}', '${friend.fullname}');">
+									<div>
+										<a onclick="openChatWindow('${friend.id}', '${friend.fullname}');" style="cursor:pointer"> ${friend.fullname} </a>
 										<img alt="write message" width="25px" src="resources/images/write_message.jpg" />
-									</a>
-								</div>
+									</div>
 								</c:when>
 								<c:otherwise>
-									<div><a href="profile?userId=${friend.id }">${friend.fullname} </a></div>
+									<div><a onclick="openChatWindow('${friend.id}', '${friend.fullname}');" style="cursor:pointer"> ${friend.fullname} </a></div>
 								</c:otherwise>
 							</c:choose>
 							</c:forEach>

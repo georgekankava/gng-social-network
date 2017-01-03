@@ -38,8 +38,8 @@ function hideSearchBox() {
 $(window).resize(function() {
 	setSearchListPosition();
 	$.each($('#chat').children(), function(index, value) {
-		var width = $(window).width() - 280;
-		var height = $(window).height() - 315;
+		var width = $(window).width() - 260;
+		var height = $(window).height() - 305;
 		$(value).attr('style', 'position:fixed; left:' + width + 'px;top:' + height + 'px;' );
 	});
 });
@@ -75,14 +75,19 @@ function openChatWindow(friendId, friendFullname) {
 	if($('#chat-window-box-' + friendId).length === 0) {
 		doOpenChatWindow(friendId, friendFullname);
 	} else {
+		var width = $(window).width() - 260 * activeChatWindowCount;
+		var height = $(window).height() - 305;
+		$('#chat-window-box-' + friendId).attr('style', 'position:fixed; left:' + width + 'px;top:' + height + 'px;' );
 		$('#chat-window-box-' + friendId).show();
+		activeChatWindowCount++;
+		
 	}
 	
 }
 
 function doOpenChatWindow(friendId, friendFullname) {
 	var width = $(window).width() - 260 * activeChatWindowCount;
-	var height = $(window).height() - 315;
+	var height = $(window).height() - 305;
 	$('#chat').append(
 			$('<div id="chat-window-box-' + friendId + '">').addClass('chat-window-box').attr('style', 'position:fixed; left:' + width + 'px;top:' + height + 'px;' ).append(
 				$('<div id="chat-window-header-' + friendId + '">')
@@ -114,7 +119,7 @@ function doOpenChatWindow(friendId, friendFullname) {
 		getMessages($('#userId').html(), friendId, 0, true);
 		$('#chat-window-' + friendId).scroll(function() {
 			if($('#chat-window-' + friendId).scrollTop() === 0) {
-				getMessages($('#userId').html(), friendId, lastMessageMillies, false);
+				getMessages($('#userId').html(), friendId, lastMessageMilliesArray[friendId], false);
 			}
 		});
 		scrollChatWindowBottom(friendId);
@@ -157,4 +162,4 @@ var postUrlImagesCounter = 0;
 
 var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November',	'December'];
 var activeChatWindowCount = 1;
-var lastMessageMillies = 0;
+var lastMessageMilliesArray = {};
