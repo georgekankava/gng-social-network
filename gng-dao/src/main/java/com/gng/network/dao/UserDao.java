@@ -3,7 +3,9 @@ package com.gng.network.dao;
 import java.util.List;
 
 import com.gng.network.enities.Image;
+import com.gng.network.enities.Message;
 import com.gng.network.enities.User;
+import com.gng.network.exceptions.DaoException;
 
 public interface UserDao {
 	void persistUser(User user);
@@ -19,5 +21,5 @@ public interface UserDao {
 	Image findUserProfileImage(Integer userId);
 	List<Image> getUserImagesById(Integer userId);
 	Image findUserImageByImageId(Integer imageId);
-	
+	List<User> loadUserMessageList(Integer userId) throws DaoException;
 }

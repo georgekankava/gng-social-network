@@ -22,6 +22,8 @@ import javax.persistence.UniqueConstraint;
 
 import org.hibernate.annotations.CollectionId;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 @Entity
 @Table(catalog="sns", name="User")
@@ -31,6 +33,7 @@ import org.hibernate.annotations.CollectionId;
 	@NamedQuery(name="User.findUserByFirstname", query="SELECT user FROM User user WHERE user.firstname = :firstname"),
 	@NamedQuery(name="User.findUserByLastname", query="SELECT user FROM User user WHERE user.lastname = :lastname"),
 	@NamedQuery(name="User.findUserByFullname", query="SELECT user FROM User user WHERE user.fullname LIKE :fullname"),
+	@NamedQuery(name="User.getUsersMessagedWith", query = "SELECT message.userTo FROM Message message WHERE message.userFrom.id = :id GROUP BY message.userTo ORDER BY MAX(message.time) DESC"),
 	@NamedQuery(name="User.findUserBySearchString", query="SELECT user FROM User user WHERE user.firstname LIKE :searchString OR user.lastname LIKE :searchString OR user.fullname LIKE :searchString OR user.username LIKE :searchString")
 	})
 public class User {
@@ -57,15 +60,18 @@ public class User {
 		inverseJoinColumns = {@JoinColumn(name = "FRIEND_USER_ID")},
 		uniqueConstraints = @UniqueConstraint(columnNames={"USER_ID", "FRIEND_USER_ID"})
 	)
+	@JsonIgnore
 	private List<User> friends;
 	
 	@OneToMany(mappedBy="userTo")
+	@JsonIgnore
 	private List<FriendRequest> friendRequests;
 	
 	@OneToOne(mappedBy="user", cascade={CascadeType.ALL})
 	private Roles role; // the roles of this user
 	
 	@OneToMany(mappedBy="user", cascade=CascadeType.PERSIST)
+	@JsonIgnore
 	private List<Post> posts;
 	
 	@OneToMany(mappedBy="user", cascade=CascadeType.ALL)
@@ -163,6 +169,7 @@ public class User {
 	public void setPostLikes(List<PostLike> postLikes) {
 		this.postLikes = postLikes;
 	}
+	
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", username=" + username + ", firstname="

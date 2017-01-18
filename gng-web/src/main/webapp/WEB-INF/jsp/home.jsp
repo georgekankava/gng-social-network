@@ -42,7 +42,7 @@
 				<div class="vertical-menu">
 					<div class="vertical-menu-inner">
 						<div><a href="user-friends?userId=${userId}">Friends</a></div>
-						<div><a href="#">Messages</a></div>
+						<div><a href="/messages">Messages</a></div>
 						<div><a href="#">Friend requests</a></div>
 						<div><a href="photos.html?userId=${userId}">Photos</a></div>
 						<div><a href="#">Events</a></div>

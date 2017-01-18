@@ -58,28 +58,23 @@ public class MessageServiceImpl implements MessageService {
 		logger.info("remove messages with id", messageId);
 		messageDao.removeMessage(messageId);
 	}
-	
-	@Transactional
-	public String getJsonMessages(Integer userFromId, Integer userToId, Long millies) throws UserNotFoundException, MessageNotFoundException {
-		logger.info("get messages for user", userFromId);
-		try {
-			User userFrom = userService.findUserById(userFromId);
-			User userTo = userService.findUserById(userToId);
-			return getJsonMessages(userFrom, userTo, millies);
-		} catch(UserNotFoundException e) {
-			logger.info(e.getMessage());
-			throw new UserNotFoundException(e.getMessage());
-		}
-	}
-	
-	private String getJsonMessages(User userFrom, User userTo, Long millies) throws MessageNotFoundException {
-		if(millies == -1) {
-			return emptyJson();
-		}
-		Long messageMillies = maxMessageMillies(userFrom, userTo, millies);
-		if(messageMillies == null) {
-			return emptyJson();
-		}
+
+    public List<com.gng.network.enities.Message> getMessages(Integer userFromId, Integer userToId, long messageMillies) throws MessageNotFoundException, UserNotFoundException {
+        try {
+            User userFrom = userService.findUserById(userFromId);
+            User userTo = userService.findUserById(userToId);
+            Long maxMessageMillies = maxMessageMillies(userFrom, userTo, messageMillies);
+            if(maxMessageMillies == null) {
+                return Collections.emptyList();
+            }
+            return getMessages(userFrom, userTo, maxMessageMillies);
+        } catch(UserNotFoundException e) {
+            logger.info(e.getMessage());
+            throw new UserNotFoundException(e.getMessage());
+        }
+    }
+
+	private List<com.gng.network.enities.Message> getMessages(User userFrom, User userTo, Long messageMillies) throws MessageNotFoundException {
 		List<com.gng.network.enities.Message> messagesUserFrom = messageDao.getMessages(userFrom, userTo, messageMillies - WebConstants.TWENTYFOUR_HOURS, messageMillies);
 		List<com.gng.network.enities.Message> messagesUserTo = messageDao.getMessages(userTo, userFrom, messageMillies - WebConstants.TWENTYFOUR_HOURS, messageMillies);
 		ArrayList<com.gng.network.enities.Message> messages = new ArrayList<com.gng.network.enities.Message>();
@@ -106,10 +101,31 @@ public class MessageServiceImpl implements MessageService {
 				return 0;
 			}
 		});
-		List<com.gng.network.json.response.Message> convertedMessages = messageHelper.convertMessagesToJsonMessages(messages);
-		String jsonMessages = messageHelper.convertMessagesToJsonString(convertedMessages);
-		return messageHelper.constructJsonResponse(jsonMessages, messageMillies != null ? messageMillies : -1 );
-		
+        return messages;
+	}
+
+    @Transactional
+	public String getJsonMessages(Integer userFromId, Integer userToId, Long millies) throws MessageNotFoundException, UserNotFoundException {
+        logger.info("get messages for user", userFromId);
+        try {
+            if(millies == -1) {
+                return emptyJson();
+            }
+            User userFrom = userService.findUserById(userFromId);
+            User userTo = userService.findUserById(userToId);
+            Long messageMillies = maxMessageMillies(userFrom, userTo, millies);
+            if(messageMillies == null) {
+                return emptyJson();
+            }
+
+            List<com.gng.network.enities.Message> messages = getMessages(userFrom, userTo, millies);
+            List<com.gng.network.json.response.Message> convertedMessages = messageHelper.convertMessagesToJsonMessages(messages);
+            String jsonMessages = messageHelper.convertMessagesToJsonString(convertedMessages);
+            return messageHelper.constructJsonResponse(jsonMessages, messageMillies != null ? messageMillies : -1 );
+        } catch(UserNotFoundException e) {
+            logger.info(e.getMessage());
+            throw new UserNotFoundException(e.getMessage());
+        }
 	}
 
 	private Long maxMessageMillies(User userFrom, User userTo, Long messageMillies) {

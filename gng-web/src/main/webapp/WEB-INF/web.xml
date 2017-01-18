@@ -4,9 +4,9 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation=" 
 	http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"> -->
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		 xmlns="http://java.sun.com/xml/ns/javaee" 
-		 xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" 
-		 xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" 
+		 xmlns="http://java.sun.com/xml/ns/javaee"
+		 xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+		 xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
 		 version="3.0">
   <context-param>
     <param-name>contextConfigLocation</param-name>
@@ -48,6 +48,10 @@
     <description>MeteorServlet</description>
     <servlet-name>MeteorServlet</servlet-name>
     <servlet-class>org.atmosphere.cpr.MeteorServlet</servlet-class>
+    <init-param>
+      <param-name>org.atmosphere.useNative</param-name>
+      <param-value>true</param-value>
+    </init-param>
     <load-on-startup>0</load-on-startup>
   </servlet>
   <servlet-mapping>
@@ -66,6 +70,7 @@
     <url-pattern>/j_spring_security_check</url-pattern>
     <url-pattern>/show-post-like-friends-list.ajax</url-pattern>
     <url-pattern>/user-friends</url-pattern>
+    <url-pattern>/get-users-messages.ajax</url-pattern>
   </filter-mapping>
   <filter>
     <filter-name>springSecurityFilterChain</filter-name>

@@ -47,5 +47,4 @@ public class MessageJPA implements MessageDao {
 			return null;
 		}
 	}
-	
 }

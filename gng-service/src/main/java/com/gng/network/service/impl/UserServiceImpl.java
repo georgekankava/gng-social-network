@@ -6,6 +6,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import com.gng.network.exceptions.DaoException;
+import com.gng.network.exceptions.ServiceException;
+import lombok.extern.slf4j.Slf4j;
 import org.atmosphere.cpr.AtmosphereResource;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
@@ -23,6 +26,7 @@ import com.gng.network.service.UserService;
 import com.gng.network.singletones.AtmosphereConnectionUuids;
 
 @Service(value = "userService")
+@Slf4j
 public class UserServiceImpl implements UserService {
 
 	@Inject
@@ -155,4 +159,18 @@ public class UserServiceImpl implements UserService {
 	public Image findUserImageByImageId(Integer imageId) {
 		return userDao.findUserImageByImageId(imageId);
 	}
+
+	@Override
+	public List<User> getUserMessageList(Integer userId) throws ServiceException {
+		try {
+			return userDao.loadUserMessageList(userId);
+		} catch (DaoException e) {
+			log.error(e.getMessage(), e);
+			throw new ServiceException(e.getMessage(), e.getKeyCode(), e);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new ServiceException(e.getMessage(), "service.exception.message.key", e);
+		}
+	}
+
 }

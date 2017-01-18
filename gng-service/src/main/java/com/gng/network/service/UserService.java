@@ -4,7 +4,9 @@ import java.util.List;
 
 import com.gng.network.enities.Image;
 import com.gng.network.enities.User;
+import com.gng.network.exceptions.DaoException;
 import com.gng.network.exceptions.PasswordNotMatchException;
+import com.gng.network.exceptions.ServiceException;
 import com.gng.network.exceptions.UserNotFoundException;
 
 public interface UserService {
@@ -25,4 +27,5 @@ public interface UserService {
 	Image findUserProfileImage(Integer userId);
 	List<Image> getUserImages(Integer userId);
 	Image findUserImageByImageId(Integer imageId);
+	List<User> getUserMessageList(Integer userId) throws ServiceException;
 }

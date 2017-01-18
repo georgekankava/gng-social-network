@@ -1,11 +1,18 @@
 package com.gng.network.dao;
 
 import java.util.List;
+import java.util.logging.Level;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
+import com.gng.network.enities.Message;
+import com.gng.network.exceptions.DaoException;
+import lombok.extern.java.Log;
+import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,6 +20,7 @@ import com.gng.network.enities.Image;
 import com.gng.network.enities.User;
 
 @Repository(value="userDao")
+@Slf4j
 public class UserJPA implements UserDao {
 
 	@PersistenceContext
@@ -91,4 +99,13 @@ public class UserJPA implements UserDao {
 		return (Image)em.createNamedQuery("Image.getImageByImageId").setParameter("imageId", imageId).getSingleResult();
 	}
 
+	@Override
+	public List<User> loadUserMessageList(Integer userId) throws DaoException {
+		try {
+			return em.createNamedQuery("User.getUsersMessagedWith").setParameter("id", userId).getResultList();
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new DaoException(e.getMessage(), "dao.expeption", e);
+		}
+	}
 }
