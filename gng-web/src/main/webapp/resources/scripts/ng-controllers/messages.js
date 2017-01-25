@@ -13,6 +13,13 @@ angular.module('messages', [])
                 $('#message-button-' + userToId).removeClass('btn-default');
                 $('#message-button-' + userToId).addClass('btn btn-info');
                 $scope.messages = response.data;
+                $('#messageInput').show();
+                $('#messageUserToId').html(userToId);
             });
+        }
+        $scope.sendMessage = function ($event, usereFromId) {
+            if ($event.keyCode === 13) {
+                alert("Enter");
+            }
         }
     });

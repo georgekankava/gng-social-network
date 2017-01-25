@@ -27,6 +27,7 @@
 <body>
     <jsp:include page="inc/header.jsp"><jsp:param name="fullname" value="${fullname}"></jsp:param></jsp:include>
     <sec:authentication property="principal.userId" var="userId"/>
+    <span id="messageUserToId" style="display: none;"></span>
     <div class="container" ng-controller="MessagesController">
         <div class="col-md-3">
             <label>Users:</label>
@@ -50,6 +51,9 @@
                         <td>{{message.message}}</td>
                     </tr>
                 </table>
+            </div>
+            <div>
+                <input ng-keypress="sendMessage($event, ${userId})" id="messageInput" ng-keydown="" name="message" type="text" class="form-control" style="display: none;"/>
             </div>
         </div>
     </div>
