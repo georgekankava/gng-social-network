@@ -23,7 +23,7 @@
           <li><a href="profile?userId=${userId}">Profile</a></li>
           <li><a href="#">Events</a></li>
           <li><a href="#">Friend Requests</a></li>
-          <li><a href="#">Settings</a></li>
+          <li><a href="/settings">Settings</a></li>
         </ul>
       </li>
     </ul>
@@ -36,9 +36,6 @@
       <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Menu <b class="caret"></b></a>
         <ul class="dropdown-menu">
-          <li><a href="#">Settings</a></li>
-          <li><a href="#">Privacy</a></li>
-          <li class="divider"></li>
           <li><a href="j_spring_security_logout">Logout</a></li>
         </ul>
       </li>
