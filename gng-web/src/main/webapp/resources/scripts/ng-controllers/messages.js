@@ -13,13 +13,20 @@ angular.module('messages', [])
                 $('#message-button-' + userToId).removeClass('btn-default');
                 $('#message-button-' + userToId).addClass('btn btn-info');
                 $scope.messages = response.data;
+                chatWindowMessages = $scope.messages.messages;
                 $('#messageInput').show();
                 $('#messageUserToId').html(userToId);
             });
         }
         $scope.sendMessage = function ($event, usereFromId) {
             if ($event.keyCode === 13) {
-                alert("Enter");
+                var messageToUserId = $('#messageUserToId').html();
+                var message = $('#messageInput').val();
+                subSocket.push(jQuery.stringifyJSON({ author: usereFromId, receiver: messageToUserId , message: message }));
+                $('#messageInput').val('');
+                $scope.messages.messages = $scope.messages.messages.concat(
+                    {message : message}
+                );
             }
         }
     });

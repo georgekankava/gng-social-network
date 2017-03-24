@@ -14,7 +14,7 @@ $(function () {
     var request = { url: baseUrl + '/meteor?userId=' + author,
                     contentType : "application/json",
                     logLevel : 'debug',
-                    transport : 'websocket' ,
+                    transport : 'websocket',
                     fallbackTransport: 'long-polling'};
 
 
@@ -60,6 +60,13 @@ $(function () {
         		openChatWindow(json.author, json.authorFullname);
         		addMessage(json.authorFullname, json.author, json.message, 'black', new Date(json.time));
         	}
+        	if($('#messagesTable') != undefined) {
+                var $scope = angular.element('div[ng-controller="MessagesController"]').scope();
+                $scope.messages.messages = $scope.messages.messages.concat([
+                    {message : json.message}
+                ]);
+                $scope.$apply();
+            }
         	
         }
     };

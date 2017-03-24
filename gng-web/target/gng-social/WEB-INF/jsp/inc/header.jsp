@@ -15,7 +15,7 @@
   <!-- Collect the nav links, forms, and other content for toggling -->
   <div class="collapse navbar-collapse navbar-ex1-collapse">
     <ul class="nav navbar-nav">
-      <li><a href="#">Messages</a></li>
+      <li><a href="/messages?userId=${userId}">Messages</a></li>
       <li><a href="/user-friends?userId=${userId}">Friends</a></li>
       <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Menu<b class="caret"></b></a>
