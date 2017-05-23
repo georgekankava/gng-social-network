@@ -8,26 +8,18 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class ServiceException extends Exception {
-
-    private String keyCode;
-
-    private ServiceException() {
-        super();
-    }
+public class ServiceException extends ApplicationException {
+    private ServiceException() {}
 
     public ServiceException(String message) {
         super(message);
     }
 
     public ServiceException(String message, String keyCode) {
-        super(message);
-        this.keyCode = keyCode;
+        super(message, keyCode);
     }
 
     public ServiceException(String message, String keyCode, Throwable th) {
-        super(message, th);
-        this.keyCode = keyCode;
+        super(message, keyCode, th);
     }
-
 }

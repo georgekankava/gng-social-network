@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.gng.network.dao.UserDao;
 import com.gng.network.enities.Image;
 import com.gng.network.enities.User;
-import com.gng.network.exceptions.PasswordNotMatchException;
+import com.gng.network.exceptions.PasswordDoNotMatchException;
 import com.gng.network.exceptions.UserNotFoundException;
 import com.gng.network.helper.UserHelper;
 import com.gng.network.json.response.UsersResponseJson;
@@ -44,13 +44,13 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Transactional
-	public User loginUser(String username, String password) throws UserNotFoundException, PasswordNotMatchException {
+	public User loginUser(String username, String password) throws UserNotFoundException, PasswordDoNotMatchException {
 		User user = userDao.findUserByUsername(username);
 		if (user == null) {
 			throw new UserNotFoundException("User " + user + " not found");
 		}
 		if (!user.getPassword().equals(password)) {
-			throw new PasswordNotMatchException("");
+			throw new PasswordDoNotMatchException("");
 		}
 		return user;
 	}

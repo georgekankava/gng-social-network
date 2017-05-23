@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import com.gng.network.utils.ApplicationUtils;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -40,26 +41,19 @@ public class UserHelper {
 		User user = new User();
 		user.setUsername(userSignupData.getUsername());
 		user.setLastname(userSignupData.getLastname());
-		user.setPassword(passwordDigest(userSignupData.getPassword()));
+		user.setPassword(ApplicationUtils.passwordDigest(userSignupData.getPassword()));
 		user.setFirstname(userSignupData.getFirstname());
 		user.setFullname(userSignupData.getFirstname() + " " + userSignupData.getLastname());
 		user.setOnline(true);
 		return user;
 	}
-	
+
 	public List<User> findUser(String username) throws UserNotFoundException {
 		User user = userService.findUserByUsername(username);
 		if(user != null) {
 			return Arrays.<User>asList(user);
 		}
 		return userService.findUserByFullname(username);
-	}
-	
-	public String passwordDigest(String password) throws NoSuchAlgorithmException, UnsupportedEncodingException {
-		MessageDigest md;
-		md = MessageDigest.getInstance("MD5");
-		byte [] digest = md.digest(password.getBytes());
-		return new String(Hex.encode(digest)); 
 	}
 	
 	public List<Integer> getUsersIds(List<User> users) {

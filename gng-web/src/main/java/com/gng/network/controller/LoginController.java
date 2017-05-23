@@ -14,7 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.gng.network.constants.WebConstants;
 import com.gng.network.enities.User;
-import com.gng.network.exceptions.PasswordNotMatchException;
+import com.gng.network.exceptions.PasswordDoNotMatchException;
 import com.gng.network.exceptions.UserNotFoundException;
 import com.gng.network.forms.LoginForm;
 import com.gng.network.forms.UserSignupData;
@@ -42,7 +42,7 @@ public class LoginController {
                 mav.setViewName("welcome");
                 mav.addObject("errorMessage", true);
                 return mav;
-            } catch(PasswordNotMatchException ex) {
+            } catch(PasswordDoNotMatchException ex) {
                 mav.setViewName("welcome");
                 mav.addObject("errorMessage", true);
                 return mav;

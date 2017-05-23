@@ -4,14 +4,13 @@ import java.util.List;
 
 import com.gng.network.enities.Image;
 import com.gng.network.enities.User;
-import com.gng.network.exceptions.DaoException;
-import com.gng.network.exceptions.PasswordNotMatchException;
+import com.gng.network.exceptions.PasswordDoNotMatchException;
 import com.gng.network.exceptions.ServiceException;
 import com.gng.network.exceptions.UserNotFoundException;
 
 public interface UserService {
 	void persistUser(User user);
-	User loginUser(String username, String password) throws UserNotFoundException, PasswordNotMatchException;
+	User loginUser(String username, String password) throws UserNotFoundException, PasswordDoNotMatchException;
 	List<User> findUsersByFirstname(String firstname);
 	List<User> findUsersByLastname(String lastname);
 	User findUserByUsername(String username) throws UserNotFoundException;

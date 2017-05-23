@@ -24,7 +24,7 @@ import org.springframework.context.MessageSource;
 import com.gng.network.dao.UserDao;
 import com.gng.network.enities.Image;
 import com.gng.network.enities.User;
-import com.gng.network.exceptions.PasswordNotMatchException;
+import com.gng.network.exceptions.PasswordDoNotMatchException;
 import com.gng.network.exceptions.UserNotFoundException;
 import com.gng.network.helper.UserHelper;
 import com.gng.network.json.response.UsersResponseJson;
@@ -218,18 +218,18 @@ public class UserServiceImplTest {
     }
 
     @Test
-    public void testLoginUser() throws UserNotFoundException, PasswordNotMatchException {
+    public void testLoginUser() throws UserNotFoundException, PasswordDoNotMatchException {
         when(user.getPassword()).thenReturn(password);
         userService.loginUser(username, password);
     }
 
     @Test(expected = UserNotFoundException.class)
-    public void testloginUserThrowsUserNotFoundException() throws UserNotFoundException, PasswordNotMatchException {
+    public void testloginUserThrowsUserNotFoundException() throws UserNotFoundException, PasswordDoNotMatchException {
         userService.loginUser("testwrongusername", password);
     }
 
-    @Test(expected = PasswordNotMatchException.class)
-    public void testloginUserThrowsPasswordNotMatchException() throws UserNotFoundException, PasswordNotMatchException {
+    @Test(expected = PasswordDoNotMatchException.class)
+    public void testloginUserThrowsPasswordNotMatchException() throws UserNotFoundException, PasswordDoNotMatchException {
         userService.loginUser(username, "testwrongpassword");
     }
 
