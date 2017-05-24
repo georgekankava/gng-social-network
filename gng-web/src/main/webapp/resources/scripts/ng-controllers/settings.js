@@ -29,27 +29,35 @@ angular.module('settingsApp', ['ngRoute'])
                 url: "/participate-in-search.ajax",
                 method: "POST",
                 params: {
-                    "userId" : $('#userId').html(),
-                    "currentPassword" : $("#currentPassword").val(),
-                    "newPassword" : $("#newPassword").val(),
-                    "confirmNewPassword" : $("#confirmNewPassword").val()
+                    "participateInSearch" : true
                 }
             }).then(function(response) {
-
+                $('#messageLabel').removeClass('alert alert-success');
+                $('#messageLabel').removeClass('alert alert-danger');
+                if(!response.data.errorMessage) {
+                    $('#messageLabel').addClass('alert alert-success');
+                } else {
+                    $('#messageLabel').addClass('alert alert-danger');
+                }
+                $('#messageLabel').text(response.data.message);
             });
         }
-        $scope.participateNo = function() {
+        $scope.participateNo = function($scope, $http) {
             $http({
                 url: "/participate-in-search.ajax",
                 method: "POST",
                 params: {
-                    "userId" : $('#userId').html(),
-                    "currentPassword" : $("#currentPassword").val(),
-                    "newPassword" : $("#newPassword").val(),
-                    "confirmNewPassword" : $("#confirmNewPassword").val()
+                    "participateInSearch" : false
                 }
             }).then(function(response) {
-
+                $('#messageLabel').removeClass('alert alert-success');
+                $('#messageLabel').removeClass('alert alert-danger');
+                if(!response.data.errorMessage) {
+                    $('#messageLabel').addClass('alert alert-success');
+                } else {
+                    $('#messageLabel').addClass('alert alert-danger');
+                }
+                $('#messageLabel').text(response.data.message);
             });
         }
     })

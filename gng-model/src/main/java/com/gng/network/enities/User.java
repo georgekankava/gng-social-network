@@ -46,6 +46,8 @@ public class User {
 	private String fullname;
 	private String password;
 	private String profileImage;
+	@OneToOne
+	private UserPrivacy userPrivacy;
 	@Transient
 	private boolean isOnline;
 	@ManyToMany(fetch=FetchType.LAZY)
@@ -177,5 +179,12 @@ public class User {
 				+ fullname + ", password=[protected], profileImage="
 				+ profileImage + ", users=" + friends + "]";
 	}
-	
+
+	public UserPrivacy getUserPrivacy() {
+		return userPrivacy;
+	}
+
+	public void setUserPrivacy(UserPrivacy userPrivacy) {
+		this.userPrivacy = userPrivacy;
+	}
 }

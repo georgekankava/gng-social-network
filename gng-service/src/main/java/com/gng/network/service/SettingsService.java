@@ -23,6 +23,13 @@ public class SettingsService {
     private UserDao userDao;
 
     @Transactional(propagation = Propagation.REQUIRED)
+    public void participateInGNGNetworkSearch(String username, boolean participateInSearch) {
+        User user = userDao.findUserByUsername(username);
+        user.getUserPrivacy().setParticipateInNetworkSearch(participateInSearch);
+        userDao.updateUser(user);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
     public void validateAndChangeUserPassword(Integer userId, String currentPassword, String newPassword) throws PasswordDoNotMatchException, ServiceException {
         try {
             User user = userDao.findUserById(userId);

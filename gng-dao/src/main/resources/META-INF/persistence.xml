@@ -17,6 +17,7 @@
 		<class>com.gng.network.enities.Image</class>
 		<class>com.gng.network.enities.Album</class>
 		<class>com.gng.network.enities.PostLike</class>
+		<class>com.gng.network.enities.UserPrivacy</class>
 	</persistence-unit>
 
 </persistence>

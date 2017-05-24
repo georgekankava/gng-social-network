@@ -2,6 +2,8 @@ package com.gng.network.controller;
 
 import com.gng.network.exceptions.PasswordDoNotMatchException;
 import com.gng.network.exceptions.ServiceException;
+import com.gng.network.security.FormUser;
+import com.gng.network.security.UserContext;
 import com.gng.network.service.SettingsService;
 import com.gng.network.utils.ApplicationUtils;
 import lombok.AllArgsConstructor;
@@ -24,7 +26,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
-import java.util.List;
 
 /**
  * Created by georgekankava on 24.03.17.
@@ -44,40 +45,49 @@ public class SettingsController {
         return "settings";
     }
 
+    @RequestMapping("/privacy")
+    public String privacy() {
+        return "inc/privacy";
+    }
+
+    @ResponseBody
+    @RequestMapping("/participate-in-search.ajax")
+    public SettingsResponseJson participateInSearchAjax(@RequestParam boolean participateInSearch) {
+        FormUser loggedUser = UserContext.getLoggedUser();
+        settingsService.participateInGNGNetworkSearch(loggedUser.getUsername(), participateInSearch);
+        String responseMessage = messageSource.getMessage("user.privacy.page.participate.in.search.success.message", null, null);
+        return new SettingsResponseJson(responseMessage, false);
+    }
+
     @RequestMapping("/change-password.ajax")
     public String changePasswordAjax() {
         return "inc/change-password";
     }
 
-    @RequestMapping("/privacy.ajax")
-    public String privacyAjax() {
-        return "inc/privacy";
-    }
-
     @ResponseBody
     @RequestMapping(value = "/process-change-password.ajax", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ProcessChangePasswordJson processChangePassword(@Valid UserPassword userPassword, BindingResult bindingResult) {
+    public SettingsResponseJson processChangePassword(@Valid UserPassword userPassword, BindingResult bindingResult) {
         try {
             if (bindingResult.hasErrors()) {
                 FieldError fieldError = bindingResult.getFieldError("newPassword");
                 String messageKey = fieldError.getDefaultMessage();
                 String successMessage = messageSource.getMessage(messageKey, null, null);
-                return new ProcessChangePasswordJson(successMessage, true);
+                return new SettingsResponseJson(successMessage, true);
             }
             if(!ApplicationUtils.validatePasswordMatches(userPassword.getNewPassword(), userPassword.getConfirmNewPassword())) {
                 throw new PasswordDoNotMatchException("New Password And Confirm New Password do not match", "reset.password.page.passwords.not.match.message");
             }
             settingsService.validateAndChangeUserPassword(userPassword.getUserId(), userPassword.getCurrentPassword(), userPassword.getNewPassword());
             String successMessage = messageSource.getMessage("password.change.page.password.successfully.changed.message", null, null);
-            return new ProcessChangePasswordJson(successMessage, false);
+            return new SettingsResponseJson(successMessage, false);
         } catch (ServiceException e) {
             log.error(e.getMessage(), e);
             String errorMessage = messageSource.getMessage(e.getKeyCode(), null, null);
-            return new ProcessChangePasswordJson(errorMessage, true);
+            return new SettingsResponseJson(errorMessage, true);
         } catch (PasswordDoNotMatchException e) {
             log.error(e.getMessage(), e);
             String errorMessage = messageSource.getMessage(e.getKeyCode(), null, null);
-            return new ProcessChangePasswordJson(errorMessage, true);
+            return new SettingsResponseJson(errorMessage, true);
         }
     }
 
@@ -95,7 +105,7 @@ public class SettingsController {
     @Getter
     @Setter
     @AllArgsConstructor
-    private static class ProcessChangePasswordJson {
+    private static class SettingsResponseJson {
         private String message;
         private boolean errorMessage;
     }
