@@ -46,7 +46,8 @@ public class User {
 	private String fullname;
 	private String password;
 	private String profileImage;
-	@OneToOne
+	@OneToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "user_privacy_id", referencedColumnName = "id")
 	private UserPrivacy userPrivacy;
 	@Transient
 	private boolean isOnline;

@@ -14,7 +14,7 @@
             Include yourself in search
         </td>
         <td>
-            <div class="btn-group" data-toggle="buttons">
+            <div id="testId" class="btn-group" data-toggle="buttons">
                 <label ng-click="participateYes()" class="btn btn-primary active">
                     <input type="radio" name="options" id="includeInSearchYes" autocomplete="off" checked> Yes
                 </label>

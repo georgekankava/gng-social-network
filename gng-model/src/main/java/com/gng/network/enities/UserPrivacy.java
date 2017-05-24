@@ -29,7 +29,6 @@ public class UserPrivacy {
     private boolean participateInNetworkSearch;
 
     @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
 }

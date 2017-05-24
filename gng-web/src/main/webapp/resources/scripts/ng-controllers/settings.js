@@ -24,6 +24,7 @@ angular.module('settingsApp', ['ngRoute'])
         }
     })
     .controller('PrivacyController', function ($scope, $http) {
+        
         $scope.participateYes = function() {
             $http({
                 url: "/participate-in-search.ajax",
@@ -42,7 +43,7 @@ angular.module('settingsApp', ['ngRoute'])
                 $('#messageLabel').text(response.data.message);
             });
         }
-        $scope.participateNo = function($scope, $http) {
+        $scope.participateNo = function() {
             $http({
                 url: "/participate-in-search.ajax",
                 method: "POST",

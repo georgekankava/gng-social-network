@@ -36,12 +36,6 @@ public class MessageServiceImplTest {
     @Mock
     private UserService userService;
 
-    @Mock
-    private MessageHelper messageHelper;
-
-    @Mock
-    private ObjectMapper mapper;
-
     @InjectMocks
     private MessageServiceImpl messageService;
 
