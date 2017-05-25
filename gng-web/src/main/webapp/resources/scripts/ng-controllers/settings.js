@@ -33,19 +33,6 @@ angular.module('settingsApp', ['ngRoute'])
                 $('#includeInSearchNo').addClass('active');
             }
         });
-        $http({
-            url: "/user-search-participation",
-            method: "GET",
-        }).then(function(response) {
-            $('#messageLabel').removeClass('alert alert-success');
-            $('#messageLabel').removeClass('alert alert-danger');
-            if(!response.data.errorMessage) {
-                $('#messageLabel').addClass('alert alert-success');
-            } else {
-                $('#messageLabel').addClass('alert alert-danger');
-            }
-            $('#messageLabel').text(response.data.message);
-        });
         $scope.participateYes = function() {
             $http({
                 url: "/participate-in-search.ajax",
