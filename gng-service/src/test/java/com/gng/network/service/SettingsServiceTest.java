@@ -4,14 +4,20 @@ import com.gng.network.dao.MessageDao;
 import com.gng.network.dao.UserDao;
 import com.gng.network.enities.User;
 import com.gng.network.enities.UserPrivacy;
+import com.gng.network.exceptions.PasswordDoNotMatchException;
+import com.gng.network.exceptions.ServiceException;
 import com.gng.network.helper.MessageHelper;
 import com.gng.network.service.impl.MessageServiceImpl;
+import com.gng.network.utils.ApplicationUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 
 import static org.mockito.Mockito.*;
 
@@ -27,6 +33,21 @@ public class SettingsServiceTest {
     @InjectMocks
     private SettingsService settingsService;
 
+    @Test
+    public void testValidateAndChangeUserPassword() throws PasswordDoNotMatchException, ServiceException, UnsupportedEncodingException, NoSuchAlgorithmException {
+        User user = mock(User.class);
+        when(user.getPassword()).thenReturn(ApplicationUtils.passwordDigest("testpassword"));
+        when(userDao.findUserById(1)).thenReturn(user);
+        settingsService.validateAndChangeUserPassword(1, "testpassword", "testpassword");
+    }
+
+    @Test(expected = PasswordDoNotMatchException.class)
+    public void testValidateAndChangeUserPasswordWithWrongPassword() throws PasswordDoNotMatchException, ServiceException, UnsupportedEncodingException, NoSuchAlgorithmException {
+        User user = mock(User.class);
+        when(user.getPassword()).thenReturn(ApplicationUtils.passwordDigest("testpassword1"));
+        when(userDao.findUserById(1)).thenReturn(user);
+        settingsService.validateAndChangeUserPassword(1, "testpassword", "testpassword");
+    }
 
     @Test
     public void testParticipateInGNGNetworkSearch() {
