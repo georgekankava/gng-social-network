@@ -24,7 +24,6 @@ angular.module('settingsApp', ['ngRoute'])
         }
     })
     .controller('PrivacyController', function ($scope, $http) {
-        
         $scope.participateYes = function() {
             $http({
                 url: "/participate-in-search.ajax",

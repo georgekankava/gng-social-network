@@ -51,6 +51,14 @@ public class SettingsController {
     }
 
     @ResponseBody
+    @RequestMapping("/user-search-participation")
+    public Object getUserSearchParticipationPricaty() {
+        String username = UserContext.getLoggedUser().getUsername();
+        boolean participatesInSearch = settingsService.getUserParticipatesInNetworkSearch(username);
+        return new UserSearchParticipation(participatesInSearch);
+    }
+
+    @ResponseBody
     @RequestMapping("/participate-in-search.ajax")
     public SettingsResponseJson participateInSearchAjax(@RequestParam boolean participateInSearch) {
         FormUser loggedUser = UserContext.getLoggedUser();
@@ -108,6 +116,13 @@ public class SettingsController {
     private static class SettingsResponseJson {
         private String message;
         private boolean errorMessage;
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    private static class UserSearchParticipation {
+        private boolean participatesInSearch;
     }
 
 }

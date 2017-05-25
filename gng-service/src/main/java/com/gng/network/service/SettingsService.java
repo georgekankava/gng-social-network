@@ -46,4 +46,13 @@ public class SettingsService {
         }
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
+    public boolean getUserParticipatesInNetworkSearch(String username) {
+        User user = userDao.findUserByUsername(username);
+        if (user.getUserPrivacy() != null) {
+            return user.getUserPrivacy().isParticipateInNetworkSearch();
+        } else {
+            return Boolean.TRUE;
+        }
+    }
 }
