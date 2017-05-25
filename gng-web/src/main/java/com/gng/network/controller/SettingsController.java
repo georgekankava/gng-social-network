@@ -51,8 +51,8 @@ public class SettingsController {
     }
 
     @ResponseBody
-    @RequestMapping("/user-search-participation")
-    public Object getUserSearchParticipationPricaty() {
+    @RequestMapping(value = "/user-search-participation", method = RequestMethod.GET)
+    public UserSearchParticipation getUserSearchParticipationPrivacy() {
         String username = UserContext.getLoggedUser().getUsername();
         boolean participatesInSearch = settingsService.getUserParticipatesInNetworkSearch(username);
         return new UserSearchParticipation(participatesInSearch);

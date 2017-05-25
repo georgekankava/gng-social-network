@@ -15,11 +15,11 @@
         </td>
         <td>
             <div id="testId" class="btn-group" data-toggle="buttons">
-                <label ng-click="participateYes()" class="btn btn-primary active">
-                    <input type="radio" name="options" id="includeInSearchYes" autocomplete="off" checked> Yes
+                <label id="includeInSearchYes" ng-click="participateYes()" class="btn btn-primary active">
+                    <input type="radio" name="options" autocomplete="off" checked> Yes
                 </label>
-                <label ng-click="participateNo()" class="btn btn-primary">
-                    <input type="radio" name="options" id="includeInSearchNo" autocomplete="off"> No
+                <label id="includeInSearchNo" ng-click="participateNo()" class="btn btn-primary">
+                    <input type="radio" name="options" autocomplete="off"> No
                 </label>
             </div>
         </td>

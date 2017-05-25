@@ -24,6 +24,28 @@ angular.module('settingsApp', ['ngRoute'])
         }
     })
     .controller('PrivacyController', function ($scope, $http) {
+        $http.get('/user-search-participation').then(function (response) {
+            if (response.data.participatesInSearch) {
+                $('#includeInSearchNo').removeClass('active');
+                $('#includeInSearchYes').addClass('active');
+            } else {
+                $('#includeInSearchYes').removeClass('active');
+                $('#includeInSearchNo').addClass('active');
+            }
+        });
+        $http({
+            url: "/user-search-participation",
+            method: "GET",
+        }).then(function(response) {
+            $('#messageLabel').removeClass('alert alert-success');
+            $('#messageLabel').removeClass('alert alert-danger');
+            if(!response.data.errorMessage) {
+                $('#messageLabel').addClass('alert alert-success');
+            } else {
+                $('#messageLabel').addClass('alert alert-danger');
+            }
+            $('#messageLabel').text(response.data.message);
+        });
         $scope.participateYes = function() {
             $http({
                 url: "/participate-in-search.ajax",
