@@ -21,7 +21,7 @@ import java.security.NoSuchAlgorithmException;
 
 import static org.mockito.Mockito.*;
 
-/**
+ /**
  * Created by georgekankava on 24.05.17.
  */
 @RunWith(MockitoJUnitRunner.class)
