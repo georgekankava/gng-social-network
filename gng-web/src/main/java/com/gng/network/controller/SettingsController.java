@@ -1,5 +1,7 @@
 package com.gng.network.controller;
 
+import com.gng.network.enities.UserPrivacy;
+import com.gng.network.enums.UserPrivacyEnum;
 import com.gng.network.exceptions.PasswordDoNotMatchException;
 import com.gng.network.exceptions.ServiceException;
 import com.gng.network.security.FormUser;
@@ -95,6 +97,20 @@ public class SettingsController {
         } catch (PasswordDoNotMatchException e) {
             log.error(e.getMessage(), e);
             String errorMessage = messageSource.getMessage(e.getKeyCode(), null, null);
+            return new SettingsResponseJson(errorMessage, true);
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(method = RequestMethod.POST)
+    public SettingsResponseJson changeUserContactPrivacy(@RequestParam UserPrivacyEnum userPrivacyEnum) {
+        try {
+            FormUser loggedUser = UserContext.getLoggedUser();
+            settingsService.changeUserContactPrivacy(loggedUser.getUsername(), userPrivacyEnum);
+            String successMessage = messageSource.getMessage("setting.successfully.changed.message", null, null);
+            return new SettingsResponseJson(successMessage, false);
+        } catch (Exception e) {
+            String errorMessage = messageSource.getMessage("general.server.error.message", null, null);
             return new SettingsResponseJson(errorMessage, true);
         }
     }

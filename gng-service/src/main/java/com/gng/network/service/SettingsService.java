@@ -2,6 +2,7 @@ package com.gng.network.service;
 
 import com.gng.network.dao.UserDao;
 import com.gng.network.enities.User;
+import com.gng.network.enums.UserPrivacyEnum;
 import com.gng.network.exceptions.PasswordDoNotMatchException;
 import com.gng.network.exceptions.ServiceException;
 import com.gng.network.utils.ApplicationUtils;
@@ -54,5 +55,12 @@ public class SettingsService {
         } else {
             return Boolean.TRUE;
         }
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void changeUserContactPrivacy(String username, UserPrivacyEnum userPrivacyEnum) {
+        User user = userDao.findUserByUsername(username);
+        user.getUserPrivacy().setUserLookupStrategy(userPrivacyEnum);
+        userDao.updateUser(user);
     }
 }

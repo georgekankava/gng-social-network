@@ -1,11 +1,15 @@
 package com.gng.network.enities;
 
+import com.gng.network.enums.UserPrivacyEnum;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -27,6 +31,10 @@ public class UserPrivacy {
     private Integer id;
 
     private boolean participateInNetworkSearch;
+
+    @Column(name = "user_lookup_strategy")
+    @Enumerated(value = EnumType.STRING)
+    private UserPrivacyEnum userLookupStrategy;
 
     @OneToOne
     private User user;
