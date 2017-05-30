@@ -1,6 +1,5 @@
 package com.gng.network.controller;
 
-import com.gng.network.enities.UserPrivacy;
 import com.gng.network.enums.UserPrivacyEnum;
 import com.gng.network.exceptions.PasswordDoNotMatchException;
 import com.gng.network.exceptions.ServiceException;
@@ -102,11 +101,11 @@ public class SettingsController {
     }
 
     @ResponseBody
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(value = "/user-lookup-strategy", method = RequestMethod.POST)
     public SettingsResponseJson changeUserContactPrivacy(@RequestParam UserPrivacyEnum userPrivacyEnum) {
         try {
             FormUser loggedUser = UserContext.getLoggedUser();
-            settingsService.changeUserContactPrivacy(loggedUser.getUsername(), userPrivacyEnum);
+            settingsService.updateUserLookupPrivacy(loggedUser.getUsername(), userPrivacyEnum);
             String successMessage = messageSource.getMessage("setting.successfully.changed.message", null, null);
             return new SettingsResponseJson(successMessage, false);
         } catch (Exception e) {

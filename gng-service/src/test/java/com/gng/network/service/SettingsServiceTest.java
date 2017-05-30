@@ -4,6 +4,7 @@ import com.gng.network.dao.MessageDao;
 import com.gng.network.dao.UserDao;
 import com.gng.network.enities.User;
 import com.gng.network.enities.UserPrivacy;
+import com.gng.network.enums.UserPrivacyEnum;
 import com.gng.network.exceptions.PasswordDoNotMatchException;
 import com.gng.network.exceptions.ServiceException;
 import com.gng.network.helper.MessageHelper;
@@ -57,5 +58,15 @@ public class SettingsServiceTest {
         when(user.getUserPrivacy()).thenReturn(userPrivacy);
         when(userDao.findUserByUsername("testUsername")).thenReturn(user);
         settingsService.participateInGNGNetworkSearch("testUsername", false);
+    }
+
+    @Test
+    public void testUpdateUserLookupPrivacy() {
+        User user = mock(User.class);
+        UserPrivacy userPrivacy = mock(UserPrivacy.class);
+        when(user.getUserPrivacy()).thenReturn(userPrivacy);
+        userPrivacy.setUserLookupStrategy(UserPrivacyEnum.FRIENDS);
+        when(userDao.findUserByUsername("testUsername")).thenReturn(user);
+        settingsService.updateUserLookupPrivacy("testUsername", UserPrivacyEnum.FRIENDS);
     }
 }

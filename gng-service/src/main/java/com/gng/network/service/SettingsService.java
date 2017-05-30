@@ -58,7 +58,7 @@ public class SettingsService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public void changeUserContactPrivacy(String username, UserPrivacyEnum userPrivacyEnum) {
+    public void updateUserLookupPrivacy(String username, UserPrivacyEnum userPrivacyEnum) {
         User user = userDao.findUserByUsername(username);
         user.getUserPrivacy().setUserLookupStrategy(userPrivacyEnum);
         userDao.updateUser(user);
