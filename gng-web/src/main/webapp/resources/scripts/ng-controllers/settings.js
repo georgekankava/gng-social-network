@@ -69,6 +69,13 @@ angular.module('settingsApp', ['ngRoute'])
                 $('#messageLabel').text(response.data.message);
             });
         }
+        $scope.publicLookupStrategy = function() {
+
+        }
+        $scope.friendsOfFriendsLookupStrategy = function() {
+
+        }
+
     })
 
     .config(function($routeProvider, $locationProvider) {

@@ -14,8 +14,8 @@
             Include yourself in search
         </td>
         <td>
-            <div id="testId" class="btn-group" data-toggle="buttons">
-                <label id="includeInSearchYes" ng-click="participateYes()" class="btn btn-primary active">
+            <div class="btn-group" data-toggle="buttons">
+                <label id="includeInSearchYes" ng-click="participateYes()" class="btn btn-primary">
                     <input type="radio" name="options" autocomplete="off" checked> Yes
                 </label>
                 <label id="includeInSearchNo" ng-click="participateNo()" class="btn btn-primary">
@@ -29,7 +29,14 @@
             Who can add you as a friend?
         </td>
         <td>
-            <input type="text" class="form-control" id="newPassword" placeholder="New Password">
+            <div class="btn-group" data-toggle="buttons">
+                <label id="publicLookupStrategy" ng-click="publicLookupStrategy()" class="btn btn-primary">
+                    <input type="radio" name="options" autocomplete="off" checked> Everyone
+                </label>
+                <label id="friendsOfFriendsLookupStrategy" ng-click="friendsLookupStrategy()" class="btn btn-primary">
+                    <input type="radio" name="options" autocomplete="off"> Friends of friends
+                </label>
+            </div>
         </td>
     </tr>
     <tr>
