@@ -122,7 +122,6 @@ angular.module('settingsApp', ['ngRoute'])
             .when('/ChangePassword', {
                 templateUrl: 'change-password.ajax',
                 controller: 'ChangePasswordController',
-
             })
             .when('/Privacy', {
                 templateUrl: 'privacy.ajax',
