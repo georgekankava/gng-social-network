@@ -26,7 +26,7 @@
     </tr>
     <tr>
         <td>
-            New Password
+            Who can add you as a friend?
         </td>
         <td>
             <input type="text" class="form-control" id="newPassword" placeholder="New Password">
