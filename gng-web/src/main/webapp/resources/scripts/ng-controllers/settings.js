@@ -33,6 +33,15 @@ angular.module('settingsApp', ['ngRoute'])
                 $('#includeInSearchNo').addClass('active');
             }
         });
+        $http.get('/user-add-as-friend-strategy').then(function (response) {
+            if (response.data === 'FIENDS_OF_FRIENDS') {
+                $('#publicLookupStrategy').removeClass('active');
+                $('#friendsOfFriendsLookupStrategy').addClass('active');
+            } else {
+                $('#friendsOfFriendsLookupStrategy').removeClass('active');
+                $('#publicLookupStrategy').addClass('active');
+            }
+        });
         $scope.participateYes = function() {
             $http({
                 url: "/participate-in-search.ajax",
