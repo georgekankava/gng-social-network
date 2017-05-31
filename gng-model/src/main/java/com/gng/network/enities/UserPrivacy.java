@@ -32,9 +32,9 @@ public class UserPrivacy {
 
     private boolean participateInNetworkSearch;
 
-    @Column(name = "user_lookup_strategy")
+    @Column(name = "add_user_as_friend_strategy")
     @Enumerated(value = EnumType.STRING)
-    private UserPrivacyEnum userLookupStrategy;
+    private UserPrivacyEnum addUserAsFriendStrategy;
 
     @OneToOne
     private User user;

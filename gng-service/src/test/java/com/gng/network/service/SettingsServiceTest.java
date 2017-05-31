@@ -1,16 +1,12 @@
 package com.gng.network.service;
 
-import com.gng.network.dao.MessageDao;
 import com.gng.network.dao.UserDao;
 import com.gng.network.enities.User;
 import com.gng.network.enities.UserPrivacy;
 import com.gng.network.enums.UserPrivacyEnum;
 import com.gng.network.exceptions.PasswordDoNotMatchException;
 import com.gng.network.exceptions.ServiceException;
-import com.gng.network.helper.MessageHelper;
-import com.gng.network.service.impl.MessageServiceImpl;
 import com.gng.network.utils.ApplicationUtils;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -65,8 +61,8 @@ public class SettingsServiceTest {
         User user = mock(User.class);
         UserPrivacy userPrivacy = mock(UserPrivacy.class);
         when(user.getUserPrivacy()).thenReturn(userPrivacy);
-        userPrivacy.setUserLookupStrategy(UserPrivacyEnum.FRIENDS);
+        userPrivacy.setAddUserAsFriendStrategy(UserPrivacyEnum.FRIENDS);
         when(userDao.findUserByUsername("testUsername")).thenReturn(user);
-        settingsService.updateUserLookupPrivacy("testUsername", UserPrivacyEnum.FRIENDS);
+        settingsService.updateUserAddAsFriendPrivacy("testUsername", UserPrivacyEnum.FRIENDS);
     }
 }

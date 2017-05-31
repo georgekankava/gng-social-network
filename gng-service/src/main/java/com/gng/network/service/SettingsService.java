@@ -58,19 +58,19 @@ public class SettingsService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public UserPrivacyEnum getUserLookupPrivacy(String username) {
+    public UserPrivacyEnum getUserAddAsFriendPrivacy(String username) {
         User user = userDao.findUserByUsername(username);
-        if (user.getUserPrivacy() != null && user.getUserPrivacy().getUserLookupStrategy() != null) {
-            return user.getUserPrivacy().getUserLookupStrategy();
+        if (user.getUserPrivacy() != null && user.getUserPrivacy().getAddUserAsFriendStrategy() != null) {
+            return user.getUserPrivacy().getAddUserAsFriendStrategy();
         } else {
             return UserPrivacyEnum.PUBLIC;
         }
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public void updateUserLookupPrivacy(String username, UserPrivacyEnum userPrivacyEnum) {
+    public void updateUserAddAsFriendPrivacy(String username, UserPrivacyEnum userPrivacyEnum) {
         User user = userDao.findUserByUsername(username);
-        user.getUserPrivacy().setUserLookupStrategy(userPrivacyEnum);
+        user.getUserPrivacy().setAddUserAsFriendStrategy(userPrivacyEnum);
         userDao.updateUser(user);
     }
 }

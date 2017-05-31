@@ -61,9 +61,9 @@ public class SettingsController {
 
     @ResponseBody
     @RequestMapping(value = "/user-add-as-friend-strategy", method = RequestMethod.GET)
-    public UserPrivacyEnum getUserLookupPrivacy() {
+    public UserPrivacyEnum getUserAddAsFriendPrivacy() {
         String username = UserContext.getLoggedUser().getUsername();
-        return settingsService.getUserLookupPrivacy(username);
+        return settingsService.getUserAddAsFriendPrivacy(username);
     }
 
     @ResponseBody
@@ -112,7 +112,7 @@ public class SettingsController {
     public SettingsResponseJson changeUserContactPrivacy(@RequestParam("userPrivacyEnum") UserPrivacyEnum userPrivacyEnum) {
         try {
             FormUser loggedUser = UserContext.getLoggedUser();
-            settingsService.updateUserLookupPrivacy(loggedUser.getUsername(), userPrivacyEnum);
+            settingsService.updateUserAddAsFriendPrivacy(loggedUser.getUsername(), userPrivacyEnum);
             String successMessage = messageSource.getMessage("setting.successfully.changed.message", null, null);
             return new SettingsResponseJson(successMessage, false);
         } catch (Exception e) {
