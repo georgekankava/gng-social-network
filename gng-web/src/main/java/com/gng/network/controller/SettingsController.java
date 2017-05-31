@@ -102,7 +102,7 @@ public class SettingsController {
 
     @ResponseBody
     @RequestMapping(value = "/user-lookup-strategy", method = RequestMethod.POST)
-    public SettingsResponseJson changeUserContactPrivacy(@RequestParam UserPrivacyEnum userPrivacyEnum) {
+    public SettingsResponseJson changeUserContactPrivacy(@RequestParam("userPrivacyEnum") UserPrivacyEnum userPrivacyEnum) {
         try {
             FormUser loggedUser = UserContext.getLoggedUser();
             settingsService.updateUserLookupPrivacy(loggedUser.getUsername(), userPrivacyEnum);

@@ -70,10 +70,40 @@ angular.module('settingsApp', ['ngRoute'])
             });
         }
         $scope.publicLookupStrategy = function() {
-
+            $http({
+                url: "/user-lookup-strategy",
+                method: "POST",
+                params: {
+                    "userPrivacyEnum" : "PUBLIC"
+                }
+            }).then(function(response) {
+                $('#messageLabel').removeClass('alert alert-success');
+                $('#messageLabel').removeClass('alert alert-danger');
+                if(!response.data.errorMessage) {
+                    $('#messageLabel').addClass('alert alert-success');
+                } else {
+                    $('#messageLabel').addClass('alert alert-danger');
+                }
+                $('#messageLabel').text(response.data.message);
+            });
         }
         $scope.friendsOfFriendsLookupStrategy = function() {
-
+            $http({
+                url: "/user-lookup-strategy",
+                method: "POST",
+                params: {
+                    "userPrivacyEnum" : "FIENDS_OF_FRIENDS"
+                }
+            }).then(function(response) {
+                $('#messageLabel').removeClass('alert alert-success');
+                $('#messageLabel').removeClass('alert alert-danger');
+                if(!response.data.errorMessage) {
+                    $('#messageLabel').addClass('alert alert-success');
+                } else {
+                    $('#messageLabel').addClass('alert alert-danger');
+                }
+                $('#messageLabel').text(response.data.message);
+            });
         }
 
     })

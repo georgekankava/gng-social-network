@@ -33,8 +33,8 @@
                 <label id="publicLookupStrategy" ng-click="publicLookupStrategy()" class="btn btn-primary">
                     <input type="radio" name="options" autocomplete="off" checked> Everyone
                 </label>
-                <label id="friendsOfFriendsLookupStrategy" ng-click="friendsLookupStrategy()" class="btn btn-primary">
-                    <input type="radio" name="options" autocomplete="off"> Friends of friends
+                <label id="friendsOfFriendsLookupStrategy" ng-click="friendsOfFriendsLookupStrategy()" class="btn btn-primary">
+                    <input type="radio" name="options" autocomplete="off"> Friends Of Friends
                 </label>
             </div>
         </td>
