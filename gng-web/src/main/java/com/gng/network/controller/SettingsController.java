@@ -60,6 +60,14 @@ public class SettingsController {
     }
 
     @ResponseBody
+    @RequestMapping(value = "/user-lookup-strategy", method = RequestMethod.GET)
+    public UserSearchParticipation getUserLookupPrivacy() {
+        String username = UserContext.getLoggedUser().getUsername();
+        UserPrivacyEnum userPrivacyEnum = settingsService.getUserLookupPrivacy(username);
+        return new UserSearchParticipation(participatesInSearch);
+    }
+
+    @ResponseBody
     @RequestMapping("/participate-in-search.ajax")
     public SettingsResponseJson participateInSearchAjax(@RequestParam boolean participateInSearch) {
         FormUser loggedUser = UserContext.getLoggedUser();

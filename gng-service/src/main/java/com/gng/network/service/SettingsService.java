@@ -58,6 +58,16 @@ public class SettingsService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
+    public UserPrivacyEnum getUserLookupPrivacy(String username) {
+        User user = userDao.findUserByUsername(username);
+        if (user.getUserPrivacy() != null && user.getUserPrivacy().getUserLookupStrategy() != null) {
+            return user.getUserPrivacy().getUserLookupStrategy();
+        } else {
+            return UserPrivacyEnum.PUBLIC;
+        }
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
     public void updateUserLookupPrivacy(String username, UserPrivacyEnum userPrivacyEnum) {
         User user = userDao.findUserByUsername(username);
         user.getUserPrivacy().setUserLookupStrategy(userPrivacyEnum);
