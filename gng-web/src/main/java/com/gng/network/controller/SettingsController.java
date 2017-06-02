@@ -81,14 +81,16 @@ public class SettingsController {
     }
 
     @RequestMapping(value = "view-friends-list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Object modifyViewFriendsListStrategy(@RequestParam("viewFriendsList") UserPrivacyEnum userPrivacyEnum) {
+    public SettingsResponseJson updateViewFriendsListStrategy(@RequestParam("viewFriendsList") UserPrivacyEnum userPrivacyEnum) {
         try {
             String username = UserContext.getLoggedUser().getUsername();
             settingsService.updateUsersFriendsListViewStrategy(username, userPrivacyEnum);
+            String successMessage = messageSource.getMessage("setting.successfully.changed.message", null, null);
+            return new SettingsResponseJson(successMessage, false);
         } catch (Exception e) {
-
+            String errorMessage = messageSource.getMessage("general.server.error.message", null, null);
+            return new SettingsResponseJson(errorMessage, true);
         }
-        return null;
     }
 
     @ResponseBody
