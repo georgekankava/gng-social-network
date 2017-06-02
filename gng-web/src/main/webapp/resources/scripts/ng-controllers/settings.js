@@ -66,7 +66,7 @@ angular.module('settingsApp', ['ngRoute'])
                 $('#messageLabel').addClass('alert alert-danger');
             }
             $('#messageLabel').text(response.data.message);
-        });
+        }, $http);
         $scope.friendsViewStrategy = viewFriendsListAjax("/view-friends-list", "POST", "FRIENDS", function(response) {
             $('#publicViewListStrategy').removeClass('active');
             $('#onlyMeViewStrategy').removeClass('active');
@@ -76,7 +76,7 @@ angular.module('settingsApp', ['ngRoute'])
                 $('#messageLabel').addClass('alert alert-danger');
             }
             $('#messageLabel').text(response.data.message);
-        });
+        }, $http);
         $scope.onlyMeViewStrategy = viewFriendsListAjax("/view-friends-list", "POST", "PRIVATE", function(response) {
             $('#publicViewListStrategy').removeClass('active');
             $('#friendsViewListStrategy').removeClass('active');
@@ -86,7 +86,7 @@ angular.module('settingsApp', ['ngRoute'])
                 $('#messageLabel').addClass('alert alert-danger');
             }
             $('#messageLabel').text(response.data.message);
-        });
+        }, $http);
         $scope.participateYes = function() {
             $http({
                 url: "/participate-in-search.ajax",
@@ -177,7 +177,7 @@ angular.module('settingsApp', ['ngRoute'])
         $locationProvider.html5Mode(true);
     });
 
-function viewFriendsListAjax(url, method, viewFriendList, successCallback) {
+function viewFriendsListAjax(url, method, viewFriendList, successCallback, $http) {
     $http({
         url: url,
         method: method,
