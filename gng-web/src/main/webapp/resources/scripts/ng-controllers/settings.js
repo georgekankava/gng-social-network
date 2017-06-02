@@ -24,6 +24,21 @@ angular.module('settingsApp', ['ngRoute'])
         }
     })
     .controller('PrivacyController', function ($scope, $http) {
+        $http.get('/view-friends-list').then(function (response) {
+            if (response.data.publicViewListStrategy) {
+                $('#onlyMeViewStrategy').removeClass('active');
+                $('#friendsViewListStrategy').removeClass('active');
+                $('#publicViewListStrategy').addClass('active');
+            } else if (response.data.friendsViewListStrategy) {
+                $('#publicViewListStrategy').removeClass('active');
+                $('#onlyMeViewStrategy').removeClass('active');
+                $('#friendsViewListStrategy').addClass('active');
+            } else {
+                $('#publicViewListStrategy').removeClass('active');
+                $('#friendsViewListStrategy').removeClass('active');
+                $('#onlyMeViewStrategy').addClass('active');
+            }
+        });
         $http.get('/user-search-participation').then(function (response) {
             if (response.data.participatesInSearch) {
                 $('#includeInSearchNo').removeClass('active');
