@@ -57,15 +57,36 @@ angular.module('settingsApp', ['ngRoute'])
                 $('#publicLookupStrategy').addClass('active');
             }
         });
-        $scope.publicViewStrategy = function() {
-            
-        }
-        $scope.friendsViewStrategy = function() {
-
-        }
-        $scope.onlyMeViewStrategy = function() {
-
-        }
+        $scope.publicViewStrategy = viewFriendsListAjax("/view-friends-list", "POST", "PUBLIC", function(response) {
+            $('#onlyMeViewStrategy').removeClass('active');
+            $('#friendsViewListStrategy').removeClass('active');
+            if(!response.data.errorMessage) {
+                $('#messageLabel').addClass('alert alert-success');
+            } else {
+                $('#messageLabel').addClass('alert alert-danger');
+            }
+            $('#messageLabel').text(response.data.message);
+        });
+        $scope.friendsViewStrategy = viewFriendsListAjax("/view-friends-list", "POST", "FRIENDS", function(response) {
+            $('#publicViewListStrategy').removeClass('active');
+            $('#onlyMeViewStrategy').removeClass('active');
+            if(!response.data.errorMessage) {
+                $('#messageLabel').addClass('alert alert-success');
+            } else {
+                $('#messageLabel').addClass('alert alert-danger');
+            }
+            $('#messageLabel').text(response.data.message);
+        });
+        $scope.onlyMeViewStrategy = viewFriendsListAjax("/view-friends-list", "POST", "PRIVATE", function(response) {
+            $('#publicViewListStrategy').removeClass('active');
+            $('#friendsViewListStrategy').removeClass('active');
+            if(!response.data.errorMessage) {
+                $('#messageLabel').addClass('alert alert-success');
+            } else {
+                $('#messageLabel').addClass('alert alert-danger');
+            }
+            $('#messageLabel').text(response.data.message);
+        });
         $scope.participateYes = function() {
             $http({
                 url: "/participate-in-search.ajax",
@@ -155,3 +176,13 @@ angular.module('settingsApp', ['ngRoute'])
         // configure html5 to get links working on jsfiddle
         $locationProvider.html5Mode(true);
     });
+
+function viewFriendsListAjax(url, method, viewFriendList, successCallback) {
+    $http({
+        url: url,
+        method: method,
+        params: {
+            "viewFriendsList" : viewFriendList
+        }
+    }).then(successCallback);
+}
