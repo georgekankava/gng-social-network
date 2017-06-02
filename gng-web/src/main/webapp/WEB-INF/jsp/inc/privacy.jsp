@@ -41,15 +41,20 @@
     </tr>
     <tr>
         <td>
-            Confirm New Password
+            Who can see my friends list?
         </td>
         <td>
-            <input type="text" class="form-control" id="confirmNewPassword" placeholder="Confirm New Password">
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <input type="submit" class="btn btn-default" style="margin-top: 5px" value="Submit">
+            <div class="btn-group" data-toggle="buttons">
+                <label id="publicViewListStrategy" ng-click="publicViewStrategy()" class="btn btn-primary">
+                    <input type="radio" name="options" autocomplete="off" checked> Everyone
+                </label>
+                <label id="friendsViewListStrategy" ng-click="friendsViewStrategy()" class="btn btn-primary">
+                    <input type="radio" name="options" autocomplete="off"> Friends
+                </label>
+                <label id="onlyMeViewStrategy" ng-click="onlyMeViewStrategy()" class="btn btn-primary">
+                    <input type="radio" name="options" autocomplete="off"> Only me
+                </label>
+            </div>
         </td>
     </tr>
 </table>
