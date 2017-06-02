@@ -57,6 +57,15 @@ angular.module('settingsApp', ['ngRoute'])
                 $('#publicLookupStrategy').addClass('active');
             }
         });
+        $scope.publicViewStrategy = function() {
+            
+        }
+        $scope.friendsViewStrategy = function() {
+
+        }
+        $scope.onlyMeViewStrategy = function() {
+
+        }
         $scope.participateYes = function() {
             $http({
                 url: "/participate-in-search.ajax",
