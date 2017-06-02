@@ -67,7 +67,6 @@ angular.module('settingsApp', ['ngRoute'])
                 } else {
                     $('#messageLabel').removeClass('alert alert-danger');
                 }
-                $('#messageLabel').text(response.data.message);
                 }, $http);
         }
         $scope.friendsViewStrategy = function() {
@@ -92,7 +91,6 @@ angular.module('settingsApp', ['ngRoute'])
                 } else {
                     $('#messageLabel').removeClass('alert alert-danger');
                 }
-                $('#messageLabel').text(response.data.message);
                 }, $http);
         }
         $scope.participateYes = function() {
@@ -111,7 +109,6 @@ angular.module('settingsApp', ['ngRoute'])
                 } else {
                     $('#messageLabel').removeClass('alert alert-danger');
                 }
-                $('#messageLabel').text(response.data.message);
             });
         }
         $scope.participateNo = function() {
@@ -130,7 +127,6 @@ angular.module('settingsApp', ['ngRoute'])
                 } else {
                     $('#messageLabel').removeClass('alert alert-danger');
                 }
-                $('#messageLabel').text(response.data.message);
             });
         }
         $scope.publicLookupStrategy = function() {
@@ -149,7 +145,6 @@ angular.module('settingsApp', ['ngRoute'])
                 } else {
                     $('#messageLabel').removeClass('alert alert-danger');
                 }
-                $('#messageLabel').text(response.data.message);
             });
         }
         $scope.friendsOfFriendsLookupStrategy = function() {
@@ -168,7 +163,6 @@ angular.module('settingsApp', ['ngRoute'])
                 } else {
                     $('#messageLabel').removeClass('alert alert-danger');
                 }
-                $('#messageLabel').text(response.data.message);
             });
         }
 
