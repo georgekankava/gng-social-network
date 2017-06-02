@@ -81,9 +81,10 @@ public class SettingsController {
     }
 
     @RequestMapping(value = "view-friends-list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Object modifyViewFriendsListStrategy(@RequestParam("userPrivacyEnum") UserPrivacyEnum userPrivacyEnum) {
+    public Object modifyViewFriendsListStrategy(@RequestParam("viewFriendsList") UserPrivacyEnum userPrivacyEnum) {
         try {
-
+            String username = UserContext.getLoggedUser().getUsername();
+            settingsService.updateUsersFriendsListViewStrategy(username, userPrivacyEnum);
         } catch (Exception e) {
 
         }

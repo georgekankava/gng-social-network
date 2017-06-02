@@ -73,4 +73,7 @@ public class SettingsService {
         user.getUserPrivacy().setAddUserAsFriendStrategy(userPrivacyEnum);
         userDao.updateUser(user);
     }
+
+    public void updateUsersFriendsListViewStrategy(String username, UserPrivacyEnum userPrivacyEnum) {
+    }
 }
