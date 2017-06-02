@@ -74,6 +74,10 @@ public class SettingsService {
         userDao.updateUser(user);
     }
 
+    @Transactional
     public void updateUsersFriendsListViewStrategy(String username, UserPrivacyEnum userPrivacyEnum) {
+        User user = userDao.findUserByUsername(username);
+        user.getUserPrivacy().setUserFriendsListViewStrategy(userPrivacyEnum);
+        userDao.updateUser(user);
     }
 }
