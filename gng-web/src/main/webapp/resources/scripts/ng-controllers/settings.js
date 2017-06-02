@@ -57,36 +57,42 @@ angular.module('settingsApp', ['ngRoute'])
                 $('#publicLookupStrategy').addClass('active');
             }
         });
-        $scope.publicViewStrategy = viewFriendsListAjax("/update-friends-list", "POST", "PUBLIC", function(response) {
-            $('#onlyMeViewStrategy').removeClass('active');
-            $('#friendsViewListStrategy').removeClass('active');
-            if(!response.data.errorMessage) {
-                $('#messageLabel').addClass('alert alert-success');
-            } else {
-                $('#messageLabel').addClass('alert alert-danger');
-            }
-            $('#messageLabel').text(response.data.message);
-        }, $http);
-        $scope.friendsViewStrategy = viewFriendsListAjax("/update-friends-list", "POST", "FRIENDS", function(response) {
-            $('#publicViewListStrategy').removeClass('active');
-            $('#onlyMeViewStrategy').removeClass('active');
-            if(!response.data.errorMessage) {
-                $('#messageLabel').addClass('alert alert-success');
-            } else {
-                $('#messageLabel').addClass('alert alert-danger');
-            }
-            $('#messageLabel').text(response.data.message);
-        }, $http);
-        $scope.onlyMeViewStrategy = viewFriendsListAjax("/update-friends-list", "POST", "PRIVATE", function(response) {
-            $('#publicViewListStrategy').removeClass('active');
-            $('#friendsViewListStrategy').removeClass('active');
-            if(!response.data.errorMessage) {
-                $('#messageLabel').addClass('alert alert-success');
-            } else {
-                $('#messageLabel').addClass('alert alert-danger');
-            }
-            $('#messageLabel').text(response.data.message);
-        }, $http);
+        $scope.publicViewStrategy = function() {
+            viewFriendsListAjax("/update-friends-list", "POST", "PUBLIC", function(response) {
+                $('#onlyMeViewStrategy').removeClass('active');
+                $('#friendsViewListStrategy').removeClass('active');
+                if(!response.data.errorMessage) {
+                    $('#messageLabel').addClass('alert alert-success');
+                } else {
+                    $('#messageLabel').addClass('alert alert-danger');
+                }
+                $('#messageLabel').text(response.data.message);
+                }, $http);
+        }
+        $scope.friendsViewStrategy = function() {
+            viewFriendsListAjax("/update-friends-list", "POST", "FRIENDS", function(response) {
+                $('#publicViewListStrategy').removeClass('active');
+                $('#onlyMeViewStrategy').removeClass('active');
+                if(!response.data.errorMessage) {
+                    $('#messageLabel').addClass('alert alert-success');
+                } else {
+                    $('#messageLabel').addClass('alert alert-danger');
+                }
+                $('#messageLabel').text(response.data.message);
+                }, $http);
+        }
+        $scope.onlyMeViewStrategy = function() {
+            viewFriendsListAjax("/update-friends-list", "POST", "PRIVATE", function(response) {
+                $('#publicViewListStrategy').removeClass('active');
+                $('#friendsViewListStrategy').removeClass('active');
+                if(!response.data.errorMessage) {
+                    $('#messageLabel').addClass('alert alert-success');
+                } else {
+                    $('#messageLabel').addClass('alert alert-danger');
+                }
+                $('#messageLabel').text(response.data.message);
+                }, $http);
+        }
         $scope.participateYes = function() {
             $http({
                 url: "/participate-in-search.ajax",
@@ -177,12 +183,12 @@ angular.module('settingsApp', ['ngRoute'])
         $locationProvider.html5Mode(true);
     });
 
-function viewFriendsListAjax(url, method, viewFriendList, successCallback, $http) {
-    $http({
-        url: url,
-        method: method,
-        params: {
-            "viewFriendsList" : viewFriendList
-        }
-    }).then(successCallback);
-}
+    function viewFriendsListAjax(url, method, viewFriendList, successCallback, $http) {
+        $http({
+            url: url,
+            method: method,
+            params: {
+                "viewFriendsList" : viewFriendList
+            }
+        }).then(successCallback);
+    }
