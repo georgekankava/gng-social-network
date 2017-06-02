@@ -80,6 +80,16 @@ public class SettingsController {
         return "inc/change-password";
     }
 
+    @RequestMapping(value = "view-friends-list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Object modifyViewFriendsListStrategy(@RequestParam("userPrivacyEnum") UserPrivacyEnum userPrivacyEnum) {
+        try {
+
+        } catch (Exception e) {
+
+        }
+        return null;
+    }
+
     @ResponseBody
     @RequestMapping(value = "/process-change-password.ajax", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public SettingsResponseJson processChangePassword(@Valid UserPassword userPassword, BindingResult bindingResult) {
