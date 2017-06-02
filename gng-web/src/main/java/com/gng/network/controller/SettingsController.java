@@ -67,6 +67,13 @@ public class SettingsController {
     }
 
     @ResponseBody
+    @RequestMapping(value = "/view-friends-list", method = RequestMethod.GET)
+    public UserPrivacyEnum getViewFriendsListStrategy() {
+        String username = UserContext.getLoggedUser().getUsername();
+        return settingsService.getUsersViewFriendsStrategy(username);
+    }
+
+    @ResponseBody
     @RequestMapping("/participate-in-search.ajax")
     public SettingsResponseJson participateInSearchAjax(@RequestParam boolean participateInSearch) {
         FormUser loggedUser = UserContext.getLoggedUser();

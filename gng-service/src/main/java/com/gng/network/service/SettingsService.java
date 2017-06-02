@@ -80,4 +80,13 @@ public class SettingsService {
         user.getUserPrivacy().setUserFriendsListViewStrategy(userPrivacyEnum);
         userDao.updateUser(user);
     }
+
+    public UserPrivacyEnum getUsersViewFriendsStrategy(String username) {
+        User user = userDao.findUserByUsername(username);
+        if (user.getUserPrivacy() != null && user.getUserPrivacy().getUserFriendsListViewStrategy() != null) {
+            return user.getUserPrivacy().getUserFriendsListViewStrategy();
+        } else {
+            return UserPrivacyEnum.PUBLIC;
+        }
+    }
 }
