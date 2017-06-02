@@ -80,7 +80,7 @@ public class SettingsController {
         return "inc/change-password";
     }
 
-    @RequestMapping(value = "/view-friends-list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/update-friends-list", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public SettingsResponseJson updateViewFriendsListStrategy(@RequestParam("viewFriendsList") UserPrivacyEnum userPrivacyEnum) {
         try {
             String username = UserContext.getLoggedUser().getUsername();

@@ -57,7 +57,7 @@ angular.module('settingsApp', ['ngRoute'])
                 $('#publicLookupStrategy').addClass('active');
             }
         });
-        $scope.publicViewStrategy = viewFriendsListAjax("/view-friends-list", "POST", "PUBLIC", function(response) {
+        $scope.publicViewStrategy = viewFriendsListAjax("/update-friends-list", "POST", "PUBLIC", function(response) {
             $('#onlyMeViewStrategy').removeClass('active');
             $('#friendsViewListStrategy').removeClass('active');
             if(!response.data.errorMessage) {
@@ -67,7 +67,7 @@ angular.module('settingsApp', ['ngRoute'])
             }
             $('#messageLabel').text(response.data.message);
         }, $http);
-        $scope.friendsViewStrategy = viewFriendsListAjax("/view-friends-list", "POST", "FRIENDS", function(response) {
+        $scope.friendsViewStrategy = viewFriendsListAjax("/update-friends-list", "POST", "FRIENDS", function(response) {
             $('#publicViewListStrategy').removeClass('active');
             $('#onlyMeViewStrategy').removeClass('active');
             if(!response.data.errorMessage) {
@@ -77,7 +77,7 @@ angular.module('settingsApp', ['ngRoute'])
             }
             $('#messageLabel').text(response.data.message);
         }, $http);
-        $scope.onlyMeViewStrategy = viewFriendsListAjax("/view-friends-list", "POST", "PRIVATE", function(response) {
+        $scope.onlyMeViewStrategy = viewFriendsListAjax("/update-friends-list", "POST", "PRIVATE", function(response) {
             $('#publicViewListStrategy').removeClass('active');
             $('#friendsViewListStrategy').removeClass('active');
             if(!response.data.errorMessage) {
