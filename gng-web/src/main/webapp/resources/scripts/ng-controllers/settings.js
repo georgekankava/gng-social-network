@@ -61,10 +61,11 @@ angular.module('settingsApp', ['ngRoute'])
             viewFriendsListAjax("/update-friends-list", "POST", "PUBLIC", function(response) {
                 $('#onlyMeViewStrategy').removeClass('active');
                 $('#friendsViewListStrategy').removeClass('active');
-                if(!response.data.errorMessage) {
-                    $('#messageLabel').addClass('alert alert-success');
-                } else {
+                if(response.data.errorMessage) {
                     $('#messageLabel').addClass('alert alert-danger');
+                    $('#messageLabel').text(response.data.message);
+                } else {
+                    $('#messageLabel').removeClass('alert alert-danger');
                 }
                 $('#messageLabel').text(response.data.message);
                 }, $http);
@@ -73,22 +74,23 @@ angular.module('settingsApp', ['ngRoute'])
             viewFriendsListAjax("/update-friends-list", "POST", "FRIENDS", function(response) {
                 $('#publicViewListStrategy').removeClass('active');
                 $('#onlyMeViewStrategy').removeClass('active');
-                if(!response.data.errorMessage) {
-                    $('#messageLabel').addClass('alert alert-success');
-                } else {
+                if(response.data.errorMessage) {
                     $('#messageLabel').addClass('alert alert-danger');
+                    $('#messageLabel').text(response.data.message);
+                } else {
+                    $('#messageLabel').removeClass('alert alert-danger');
                 }
-                $('#messageLabel').text(response.data.message);
                 }, $http);
         }
         $scope.onlyMeViewStrategy = function() {
             viewFriendsListAjax("/update-friends-list", "POST", "PRIVATE", function(response) {
                 $('#publicViewListStrategy').removeClass('active');
                 $('#friendsViewListStrategy').removeClass('active');
-                if(!response.data.errorMessage) {
-                    $('#messageLabel').addClass('alert alert-success');
-                } else {
+                if(response.data.errorMessage) {
                     $('#messageLabel').addClass('alert alert-danger');
+                    $('#messageLabel').text(response.data.message);
+                } else {
+                    $('#messageLabel').removeClass('alert alert-danger');
                 }
                 $('#messageLabel').text(response.data.message);
                 }, $http);
@@ -103,10 +105,11 @@ angular.module('settingsApp', ['ngRoute'])
             }).then(function(response) {
                 $('#messageLabel').removeClass('alert alert-success');
                 $('#messageLabel').removeClass('alert alert-danger');
-                if(!response.data.errorMessage) {
-                    $('#messageLabel').addClass('alert alert-success');
-                } else {
+                if(response.data.errorMessage) {
                     $('#messageLabel').addClass('alert alert-danger');
+                    $('#messageLabel').text(response.data.message);
+                } else {
+                    $('#messageLabel').removeClass('alert alert-danger');
                 }
                 $('#messageLabel').text(response.data.message);
             });
@@ -121,10 +124,11 @@ angular.module('settingsApp', ['ngRoute'])
             }).then(function(response) {
                 $('#messageLabel').removeClass('alert alert-success');
                 $('#messageLabel').removeClass('alert alert-danger');
-                if(!response.data.errorMessage) {
-                    $('#messageLabel').addClass('alert alert-success');
-                } else {
+                if(response.data.errorMessage) {
                     $('#messageLabel').addClass('alert alert-danger');
+                    $('#messageLabel').text(response.data.message);
+                } else {
+                    $('#messageLabel').removeClass('alert alert-danger');
                 }
                 $('#messageLabel').text(response.data.message);
             });
@@ -139,10 +143,11 @@ angular.module('settingsApp', ['ngRoute'])
             }).then(function(response) {
                 $('#messageLabel').removeClass('alert alert-success');
                 $('#messageLabel').removeClass('alert alert-danger');
-                if(!response.data.errorMessage) {
-                    $('#messageLabel').addClass('alert alert-success');
-                } else {
+                if(response.data.errorMessage) {
                     $('#messageLabel').addClass('alert alert-danger');
+                    $('#messageLabel').text(response.data.message);
+                } else {
+                    $('#messageLabel').removeClass('alert alert-danger');
                 }
                 $('#messageLabel').text(response.data.message);
             });
@@ -157,10 +162,11 @@ angular.module('settingsApp', ['ngRoute'])
             }).then(function(response) {
                 $('#messageLabel').removeClass('alert alert-success');
                 $('#messageLabel').removeClass('alert alert-danger');
-                if(!response.data.errorMessage) {
-                    $('#messageLabel').addClass('alert alert-success');
-                } else {
+                if(response.data.errorMessage) {
                     $('#messageLabel').addClass('alert alert-danger');
+                    $('#messageLabel').text(response.data.message);
+                } else {
+                    $('#messageLabel').removeClass('alert alert-danger');
                 }
                 $('#messageLabel').text(response.data.message);
             });
