@@ -29,7 +29,7 @@ angular.module('settingsApp', ['ngRoute'])
                 $('#onlyMePostViewStrategy').removeClass('active');
                 $('#friendsPostViewListStrategy').removeClass('active');
                 $('#publicPostViewListStrategy').addClass('active');
-            } else if (response.data === 'FIENDS_OF_FRIENDS'){
+            } else if (response.data === 'FRIENDS'){
                 $('#publicPostViewListStrategy').removeClass('active');
                 $('#onlyMePostViewStrategy').removeClass('active');
                 $('#friendsPostViewListStrategy').addClass('active');
