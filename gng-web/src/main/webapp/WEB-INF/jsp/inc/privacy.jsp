@@ -54,6 +54,26 @@
                 <label id="onlyMeViewStrategy" ng-click="onlyMeViewStrategy()" class="btn btn-primary">
                     <input type="radio" name="options" autocomplete="off"> Only me
                 </label>
+
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Who can see my posts?
+        </td>
+        <td>
+            <div class="btn-group" data-toggle="buttons">
+                <label id="publicPostViewListStrategy" ng-click="publicPostViewStrategy()" class="btn btn-primary">
+                    <input type="radio" name="options" autocomplete="off" checked> Everyone
+                </label>
+                <label id="friendsPostViewListStrategy" ng-click="friendsPostViewStrategy()" class="btn btn-primary">
+                    <input type="radio" name="options" autocomplete="off"> Friends
+                </label>
+                <label id="onlyMePostViewStrategy" ng-click="onlyMePostViewStrategy()" class="btn btn-primary">
+                    <input type="radio" name="options" autocomplete="off"> Only me
+                </label>
+
             </div>
         </td>
     </tr>

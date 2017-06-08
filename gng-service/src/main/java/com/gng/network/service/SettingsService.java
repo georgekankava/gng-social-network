@@ -89,4 +89,13 @@ public class SettingsService {
             return UserPrivacyEnum.PUBLIC;
         }
     }
+
+    public UserPrivacyEnum getUserPostViewPrivacy(String username) {
+        User user = userDao.findUserByUsername(username);
+        if (user.getUserPrivacy() != null && user.getUserPrivacy().getUserPostViewStrategy() != null) {
+            return user.getUserPrivacy().getUserPostViewStrategy();
+        } else {
+            return UserPrivacyEnum.PUBLIC;
+        }
+    }
 }

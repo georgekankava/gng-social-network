@@ -52,11 +52,18 @@ public class SettingsController {
     }
 
     @ResponseBody
+    @RequestMapping(value = "/user-post-view-strategy", method = RequestMethod.GET)
+    public Object getUserPostViewPrivacy() {
+        String username = UserContext.getLoggedUser().getUsername();
+        return settingsService.getUserPostViewPrivacy(username);
+    }
+
+    @ResponseBody
     @RequestMapping(value = "/user-search-participation", method = RequestMethod.GET)
-    public UserSearchParticipation getUserSearchParticipationPrivacy() {
+    public UserParticipationResponseJson getUserSearchParticipationPrivacy() {
         String username = UserContext.getLoggedUser().getUsername();
         boolean participatesInSearch = settingsService.getUserParticipatesInNetworkSearch(username);
-        return new UserSearchParticipation(participatesInSearch);
+        return new UserParticipationResponseJson(participatesInSearch);
     }
 
     @ResponseBody
@@ -164,7 +171,7 @@ public class SettingsController {
     @Getter
     @Setter
     @AllArgsConstructor
-    private static class UserSearchParticipation {
+    private static class UserParticipationResponseJson {
         private boolean participatesInSearch;
     }
 

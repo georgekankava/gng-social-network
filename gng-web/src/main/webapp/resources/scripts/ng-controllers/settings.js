@@ -24,6 +24,21 @@ angular.module('settingsApp', ['ngRoute'])
         }
     })
     .controller('PrivacyController', function ($scope, $http) {
+        $http.get('/user-post-view-strategy').then(function (response) {
+            if (response.data === 'PUBLIC') {
+                $('#onlyMePostViewStrategy').removeClass('active');
+                $('#friendsPostViewListStrategy').removeClass('active');
+                $('#publicPostViewListStrategy').addClass('active');
+            } else if (response.data === 'FIENDS_OF_FRIENDS'){
+                $('#publicPostViewListStrategy').removeClass('active');
+                $('#onlyMePostViewStrategy').removeClass('active');
+                $('#friendsPostViewListStrategy').addClass('active');
+            } else if (response.data === 'PRIVATE') {
+                $('#publicPostViewListStrategy').removeClass('active');
+                $('#friendsPostViewListStrategy').removeClass('active');
+                $('#onlyMePostViewStrategy').addClass('active');
+            }
+        });
         $http.get('/view-friends-list').then(function (response) {
             if (response.data.publicViewListStrategy) {
                 $('#onlyMeViewStrategy').removeClass('active');

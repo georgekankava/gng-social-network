@@ -40,6 +40,10 @@ public class UserPrivacy {
     @Column(name = "user_friends_list_view_strategy")
     private UserPrivacyEnum userFriendsListViewStrategy;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "user_post_view_strategy")
+    private UserPrivacyEnum userPostViewStrategy;
+
     @OneToOne
     private User user;
 
