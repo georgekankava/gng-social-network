@@ -126,6 +126,24 @@ angular.module('settingsApp', ['ngRoute'])
                 }
             });
         }
+        $scope.changePostViewStrategy = function(privacyType) {
+            $http({
+                url: "/chage-user-post-view-strategy",
+                method: "POST",
+                params: {
+                    "postViewStrategy" : privacyType
+                }
+            }).then(function(response) {
+                $('#messageLabel').removeClass('alert alert-success');
+                $('#messageLabel').removeClass('alert alert-danger');
+                if(response.data.errorMessage) {
+                    $('#messageLabel').addClass('alert alert-danger');
+                    $('#messageLabel').text(response.data.message);
+                } else {
+                    $('#messageLabel').removeClass('alert alert-danger');
+                }
+            });
+        }
         $scope.participateNo = function() {
             $http({
                 url: "/participate-in-search.ajax",

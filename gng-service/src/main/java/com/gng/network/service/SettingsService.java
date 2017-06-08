@@ -98,4 +98,11 @@ public class SettingsService {
             return UserPrivacyEnum.PUBLIC;
         }
     }
+
+    @Transactional
+    public void updateUsersPostViewStrategy(String username, UserPrivacyEnum userPrivacyEnum) {
+        User user = userDao.findUserByUsername(username);
+        user.getUserPrivacy().setUserPostViewStrategy(userPrivacyEnum);
+        userDao.updateUser(user);
+    }
 }

@@ -64,13 +64,13 @@
         </td>
         <td>
             <div class="btn-group" data-toggle="buttons">
-                <label id="publicPostViewListStrategy" ng-click="publicPostViewStrategy()" class="btn btn-primary">
+                <label id="publicPostViewListStrategy" ng-click="changePostViewStrategy('PUBLIC')" class="btn btn-primary">
                     <input type="radio" name="options" autocomplete="off" checked> Everyone
                 </label>
-                <label id="friendsPostViewListStrategy" ng-click="friendsPostViewStrategy()" class="btn btn-primary">
+                <label id="friendsPostViewListStrategy" ng-click="changePostViewStrategy('FRIENDS')" class="btn btn-primary">
                     <input type="radio" name="options" autocomplete="off"> Friends
                 </label>
-                <label id="onlyMePostViewStrategy" ng-click="onlyMePostViewStrategy()" class="btn btn-primary">
+                <label id="onlyMePostViewStrategy" ng-click="changePostViewStrategy('PRIVATE')" class="btn btn-primary">
                     <input type="radio" name="options" autocomplete="off"> Only me
                 </label>
 

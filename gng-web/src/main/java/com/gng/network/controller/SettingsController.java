@@ -59,6 +59,20 @@ public class SettingsController {
     }
 
     @ResponseBody
+    @RequestMapping(value = "/chage-user-post-view-strategy", method = RequestMethod.POST)
+    public SettingsResponseJson updateUserPostViewStrategy(@RequestParam("postViewStrategy") UserPrivacyEnum UserPrivacyEnum) {
+        try {
+            String username = UserContext.getLoggedUser().getUsername();
+            settingsService.updateUsersPostViewStrategy(username, UserPrivacyEnum);
+            String successMessage = messageSource.getMessage("setting.successfully.changed.message", null, null);
+            return new SettingsResponseJson(successMessage, false);
+        } catch (Exception e) {
+            String errorMessage = messageSource.getMessage("general.server.error.message", null, null);
+            return new SettingsResponseJson(errorMessage, true);
+        }
+    }
+
+    @ResponseBody
     @RequestMapping(value = "/user-search-participation", method = RequestMethod.GET)
     public UserParticipationResponseJson getUserSearchParticipationPrivacy() {
         String username = UserContext.getLoggedUser().getUsername();
